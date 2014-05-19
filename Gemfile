@@ -9,6 +9,9 @@ gem 'rails_12factor'
 group :development do
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
+  gem 'guard'
+  gem 'guard-livereload', require: false
+  gem "rack-livereload"
 end
 
 group :production do
