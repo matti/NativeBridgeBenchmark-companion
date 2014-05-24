@@ -5,8 +5,6 @@
   <%= @test.name %>
 </p>
 
-<button id="loadURL">LoadURL()</button>
-
-
+<%= link_to "Results", test_results_path(@test) %> |
 <%= link_to 'Edit', edit_test_path(@test) %> |
 <%= link_to 'Back', tests_path %>

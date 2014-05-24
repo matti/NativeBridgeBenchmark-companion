@@ -13,3 +13,12 @@
  *= require_tree .
  *= require_self
  */
+
+#indicator {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  visibility: hidden;
+  background-color: yellow;
+  z-index: 9999999;
+}

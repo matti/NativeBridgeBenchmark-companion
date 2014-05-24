@@ -9,3 +9,11 @@ document.addEventListener "DOMContentLoaded", ->
     now = new Date
 
     window.location.href="nativeBridge://ping?webview_started_at=#{now.toJSON()}"
+
+    indicatorElem = document.querySelector("#indicator")
+    indicatorElem.textContent = "performed"
+    indicatorElem.style.visibility="visible"
+
+    setTimeout =>
+      indicatorElem.style.visibility = "hidden"
+    , 500
