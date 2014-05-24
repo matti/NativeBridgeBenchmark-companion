@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  test_id: 
+  native_at: 2014-05-24 18:19:09
+  webview_at: 2014-05-24 18:19:09
+
+two:
+  test_id: 
+  native_at: 2014-05-24 18:19:09
+  webview_at: 2014-05-24 18:19:09

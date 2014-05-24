@@ -1,0 +1,45 @@
+<% url = if params[:action] == "new"
+test_results_path(@test)
+else
+  test_result_path(@test, @result)
+end
+%>
+<%= form_for(@result, :url => url ) do |f| %>
+  <% if @result.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@result.errors.count, "error") %> prohibited this result from being saved:</h2>
+
+      <ul>
+      <% @result.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :test_id %><br>
+    <%= f.text_field :test_id %>
+  </div>
+  <div class="field">
+    <%= f.label :native_started_at %><br>
+    <%= f.datetime_select :native_started_at %>
+  </div>
+  <div class="field">
+    <%= f.label :native_received_at %><br>
+    <%= f.datetime_select :native_received_at %>
+  </div>
+
+  <div class="field">
+    <%= f.label :webview_started_at %><br>
+    <%= f.datetime_select :webview_started_at %>
+  </div>
+  <div class="field">
+    <%= f.label :webview_received_at %><br>
+    <%= f.datetime_select :webview_received_at %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

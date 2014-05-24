@@ -6,5 +6,6 @@ document.addEventListener "DOMContentLoaded", ->
 
   document.querySelector("button#loadURL").onclick = ->
     console.log "loadURL started"
+    now = new Date
 
-    window.location.href="nativeBridge://ping"
+    window.location.href="nativeBridge://ping?webview_started_at=#{now.toJSON()}"
