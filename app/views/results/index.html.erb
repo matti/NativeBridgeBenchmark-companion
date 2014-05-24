@@ -8,12 +8,13 @@
   <thead>
     <tr>
       <th>Result</th>
+      <th>webview to native delta</th>
+      <th>native to webview delta</th>
+
       <th>WebView start</th>
       <th>Native received</th>
-      <th>webview to native delta</th>
       <th>Native started</th>
       <th>WebView received</th>
-      <th>native to webview delta</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -22,13 +23,14 @@
     <% @results.each do |result| %>
       <tr>
         <td><%= result.id %></td>
+        <td><%= result.delta_webview_to_native %></td>
+        <td><%= result.delta_native_to_webview %></td>
+
         <td><%= result.webview_started_at.to_f %></td>
         <td><%= result.native_received_at.to_f %></td>
-        <td><%= result.delta_webview_to_native %></td>
 
         <td><%= result.native_started_at.to_f %></td>
         <td><%= result.webview_received_at.to_f %></td>
-        <td><%= result.delta_native_to_webview %></td>
 
 
         <td><%= link_to 'Edit', edit_test_result_path(@test, result) %></td>

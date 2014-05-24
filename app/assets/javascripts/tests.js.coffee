@@ -4,16 +4,34 @@
 
 document.addEventListener "DOMContentLoaded", ->
 
-  document.querySelector("button#loadURL").onclick = ->
-    console.log "loadURL started"
-    now = new Date
+  loadURLElem = document.querySelector("button#loadURL")
 
-    window.location.href="nativeBridge://ping?webview_started_at=#{now.toJSON()}"
+  if loadURLElem
+    loadURLElem.onclick = ->
+      console.log "loadURL started"
+      now = new Date
 
-    indicatorElem = document.querySelector("#indicator")
-    indicatorElem.textContent = "performed"
-    indicatorElem.style.visibility="visible"
+      window.location.href="nativeBridge://ping?webview_started_at=#{now.toJSON()}&pong=pong"
 
-    setTimeout =>
-      indicatorElem.style.visibility = "hidden"
-    , 500
+      indicatorElem = document.querySelector("#indicator")
+      indicatorElem.textContent = "performed"
+      indicatorElem.style.visibility="visible"
+
+      setTimeout =>
+        indicatorElem.style.visibility = "hidden"
+      , 500
+
+window.pong = (fromNativeJSON) ->
+  fromNative = JSON.parse(fromNativeJSON).result
+  now = new Date
+
+  $.ajax
+    type: 'POST'
+    data:
+      result:
+        webview_started_at: fromNative.webview_started_at
+        webview_received_at: now.toJSON()
+        native_received_at: fromNative.native_received_at
+        native_started_at: fromNative.native_started_at
+    success: (data) ->
+      console.log "put suges"
