@@ -4,16 +4,40 @@
 
 <h1>Perform tests</h1>
 
+<label>Payload length:</label>
+<input id="payloadLengthElem" type="text" value="1000" size="5"></input><br/>
+
+<label>Interval length:</label>
+<input id="intervalElem" type="text" value="250" size="8"></input><br/>
+
+
+<label>Pong back?</label>
+<select id="pongElem">
+  <option value="yes">YES!</option>
+  <option value="no">NO!</option>
+</select><br/>
+
+<label>Pong payload length:</label>
+<input id="pongPayloadLengthElem" type="text" value="100" size="8"></input><br/>
+
 <button id="loadURL">LoadURL()</button>
 
 <h1>Listing results</h1>
+<%= link_to 'Destroy all results', destroy_all_test_results_path(@test), method: :delete, data: { confirm: 'Are you sure?' } %>
+
+<%= render 'tests/testresults' %>
 
 <table border="1">
   <thead>
     <tr>
       <th>Result</th>
+      <th>from</th>
+      <th>fps</th>
       <th>webview to native delta</th>
       <th>native to webview delta</th>
+
+      <th>webview payload</th>
+      <th>native payload</th>
 
       <th>WebView start</th>
       <th>Native received</th>
@@ -27,8 +51,14 @@
     <% @results.each do |result| %>
       <tr>
         <td><%= result.id %></td>
+        <td><%= result.from %></td>
+        <td><%= result.fps %></td>
+
         <td><%= result.delta_webview_to_native %></td>
         <td><%= result.delta_native_to_webview %></td>
+
+        <td><%= result.webview_payload_length %></td>
+        <td><%= result.native_payload_length %></td>
 
         <td><%= result.webview_started_at.to_f %></td>
         <td><%= result.native_received_at.to_f %></td>

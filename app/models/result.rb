@@ -1,6 +1,8 @@
 class Result < ActiveRecord::Base
   belongs_to :test
 
+  default_scope { order('id DESC') }
+
   def delta_webview_to_native
     delta = native_received_at.to_f - webview_started_at.to_f
     delta < 0 ? "N/A" : delta

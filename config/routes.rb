@@ -4,7 +4,11 @@ Rails.application.routes.draw do
       delete 'reset'
     end
 
-    resources :results
+    resources :results do
+      collection do
+        delete 'destroy_all'
+      end
+    end
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

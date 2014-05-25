@@ -233,6 +233,7 @@ function animate(canvas, balls, lastTime, mousePos) {
   }
 
   window.stats.end()
+  window.COULD_NOT_ANIMATE_EVEN_ONCE = false
   // request new frame
   requestAnimFrame(function() {
     animate(canvas, balls, lastTime, mousePos);

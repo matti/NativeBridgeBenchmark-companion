@@ -1,6 +1,6 @@
 class ResultsController < ApplicationController
   before_action :set_test_and_result, only: [:edit, :update, :destroy]
-  before_action :set_test, only: [:index, :create]
+  before_action :set_test, only: [:index, :create, :destroy_all]
 
   def index
     @results = @test.results
@@ -36,8 +36,8 @@ class ResultsController < ApplicationController
     end
   end
 
-  def destroy
-    @result.destroy
+  def destroy_all
+    @test.results.destroy_all
     respond_to do |format|
       format.html { redirect_to test_results_url(@test), notice: 'Result was successfully destroyed.' }
       format.json { head :no_content }
@@ -58,6 +58,6 @@ class ResultsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def result_params
-      params.require(:result).permit(:webview_started_at, :native_received_at, :native_started_at, :webview_received_at)
+      params.require(:result).permit(:webview_started_at, :native_received_at, :native_started_at, :webview_received_at, :webview_payload_length, :native_payload_length, :from, :fps)
     end
 end

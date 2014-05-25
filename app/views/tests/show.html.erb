@@ -3,6 +3,9 @@
 <p>
   <strong>Name:</strong>
   <%= @test.name %>
+
+  <%= render 'testresults' %>
+
 </p>
 
 <%= link_to "Results", test_results_path(@test) %> |

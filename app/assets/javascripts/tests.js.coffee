@@ -26,11 +26,24 @@ stats.domElement.style.top = '0px'
 
 document.body.appendChild( stats.domElement )
 
+window.payloadGenerator = (length) ->
+  text = ""
+  possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-window.loadURLThing = () ->
+  for i in [0..length] by 1
+    text += possible.charAt(Math.floor(Math.random() * possible.length))
+
+  return text
+
+window.loadURLThing = (payload, pongBack, pongPayloadLength) ->
   now = new Date
   console.log "loadURL started"
-  window.location.href="nativeBridge://ping?webview_started_at=#{now.toJSON()}&pong=pong"
+  requestURL = "nativeBridge://ping?webview_started_at=#{now.toJSON()}&payload='#{payload}'"
+
+  if pongBack
+    requestURL = requestURL + "&pong=pong&pongPayloadLength=#{pongPayloadLength}"
+
+  window.location.href=requestURL
 
 
 window.showIndicator = (message) ->
@@ -52,16 +65,30 @@ document.querySelector("button#loadURL").onclick = ->
     delete window.loadURLInterval
     return
 
+  payloadLength = parseInt(document.querySelector("#payloadLengthElem").value)
+  intervalLength = parseInt(document.querySelector("#intervalElem").value)
+  pongBack = document.querySelector("#pongElem").value == "yes"
+  pongPayloadLength = parseInt(document.querySelector("#pongPayloadLengthElem").value)
+
+  payload = window.payloadGenerator(1024*payloadLength)
+
   window.loadURLInterval = setInterval =>
-    loadURLThing()
-  , 250
+    loadURLThing(payload, pongBack, (pongPayloadLength*1024))
+  , intervalLength
 
   showIndicator("started!")
 
 
 window.pong = (fromNativeJSON) ->
-  fromNative = JSON.parse(fromNativeJSON).result
+  fromNative = JSON.parse(fromNativeJSON)
   now = new Date
+
+  currentFps = parseInt(stats.domElement.firstChild.textContent)
+
+  if window.COULD_NOT_ANIMATE_EVEN_ONCE
+    currentFps = 0
+  else
+    window.COULD_NOT_ANIMATE_EVEN_ONCE = true
 
   $.ajax
     type: 'POST'
@@ -71,5 +98,9 @@ window.pong = (fromNativeJSON) ->
         webview_received_at: now.toJSON()
         native_received_at: fromNative.native_received_at
         native_started_at: fromNative.native_started_at
+        webview_payload_length: fromNative.webview_payload_length
+        native_payload_length: fromNative.pongPayload.length
+        from: "webview"
+        fps: currentFps
     success: (data) ->
       console.log "put suges"

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140524151909) do
+ActiveRecord::Schema.define(version: 20140525111533) do
 
   create_table "results", force: true do |t|
     t.integer  "test_id"
@@ -21,6 +21,10 @@ ActiveRecord::Schema.define(version: 20140524151909) do
     t.datetime "native_started_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "webview_payload_length"
+    t.string   "from"
+    t.integer  "fps"
+    t.integer  "native_payload_length"
   end
 
   add_index "results", ["test_id"], name: "index_results_on_test_id"
