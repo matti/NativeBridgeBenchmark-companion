@@ -69,11 +69,11 @@
         <td><%= result.webview_payload_length %></td>
         <td><%= result.native_payload_length %></td>
 
-        <td><%= result.webview_started_at.to_f %></td>
-        <td><%= result.native_received_at.to_f %></td>
+        <td><%= result.webview_started_at.to_f.round(4) %></td>
+        <td><%= result.native_received_at.to_f.round(4) %></td>
 
-        <td><%= result.native_started_at.to_f %></td>
-        <td><%= result.webview_received_at.to_f %></td>
+        <td><%= result.native_started_at.to_f.round(4) %></td>
+        <td><%= result.webview_received_at.to_f.round(4) %></td>
 
 
         <td><%= link_to 'Edit', edit_test_result_path(@test, result) %></td>
