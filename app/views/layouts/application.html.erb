@@ -5,13 +5,11 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
-<body>
+<body data-no-turbolink="pls">
 
 <div id="indicator">
   INDICATOR
 </div>
-
-<div id="fps">-1</div>
 
 <a href="javascript:history.back()">Back</a> | <%= link_to "test index", tests_path %>
 <hr>
