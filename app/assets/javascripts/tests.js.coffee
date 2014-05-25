@@ -35,13 +35,16 @@ window.payloadGenerator = (length) ->
 
   return text
 
-window.loadURLThing = (payload, pongBack, pongPayloadLength) ->
+window.loadURLThing = (payload, pongBack, pongPayloadLength, callback) ->
   now = new Date
   console.log "loadURL started"
   requestURL = "nativeBridge://ping?webview_started_at=#{now.toJSON()}&payload='#{payload}'"
 
   if pongBack
     requestURL = requestURL + "&pong=pong&pongPayloadLength=#{pongPayloadLength}"
+
+  if callback
+    requestURL = requestURL + "&callback=#{callback}"
 
   window.location.href=requestURL
 
@@ -56,28 +59,46 @@ window.showIndicator = (message) ->
   , 500
 
 
-
-document.querySelector("button#loadURL").onclick = ->
-
-  if window.loadURLInterval
-    showIndicator("stopped!")
-    clearInterval(window.loadURLInterval)
-    delete window.loadURLInterval
-    return
+window.performLoadURL = () ->
+  return unless window.intervalSending or window.loadURLSending
 
   payloadLength = parseInt(document.querySelector("#payloadLengthElem").value)
-  intervalLength = parseInt(document.querySelector("#intervalElem").value)
+
+  intervalLength = parseInt(document.querySelector("#intervalLengthElem").value)
   pongBack = document.querySelector("#pongElem").value == "yes"
   pongPayloadLength = parseInt(document.querySelector("#pongPayloadLengthElem").value)
 
   payload = window.payloadGenerator(1024*payloadLength)
 
-  window.loadURLInterval = setInterval =>
-    loadURLThing(payload, pongBack, (pongPayloadLength*1024))
-  , intervalLength
+  if intervalSending
+    window.loadURLInterval = setInterval =>
+      loadURLThing(payload, pongBack, (pongPayloadLength*1024))
+    , intervalLength
+  else
+    loadURLThing(payload, pongBack, (pongPayloadLength*1024), 'performLoadURL')
+
+
+document.querySelector("button#loadURL").onclick = ->
+  if window.intervalSending or window.loadURLSending
+    showIndicator("stopped!")
+
+    if window.loadURLInterval
+      clearInterval(window.loadURLInterval)
+      delete window.loadURLInterval
+      delete window.intervalSending
+
+    if window.loadURLSending
+      delete window.loadURLSending
+
+    return
+
+  window.intervalSending = document.querySelector("#intervalElem").value == "yes"
+
+  unless window.intervalSending
+    window.loadURLSending = true
 
   showIndicator("started!")
-
+  performLoadURL()
 
 window.pong = (fromNativeJSON) ->
   fromNative = JSON.parse(fromNativeJSON)
@@ -104,3 +125,6 @@ window.pong = (fromNativeJSON) ->
         fps: currentFps
     success: (data) ->
       console.log "put suges"
+
+  if window.loadURLSending
+    performLoadURL()
