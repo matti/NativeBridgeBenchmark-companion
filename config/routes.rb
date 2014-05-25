@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
   resources :tests do
+    collection do
+      delete 'reset'
+    end
+
     resources :results
   end
 

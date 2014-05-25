@@ -1,6 +1,11 @@
 class TestsController < ApplicationController
   before_action :set_test, only: [:show, :edit, :update, :destroy]
 
+  def reset
+    system("rake db:migrate VERSION=0")
+    system("rake db:migrate")
+  end
+
   # GET /tests
   # GET /tests.json
   def index

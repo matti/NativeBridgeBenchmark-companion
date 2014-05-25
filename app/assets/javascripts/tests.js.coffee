@@ -2,24 +2,62 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-document.addEventListener "DOMContentLoaded", ->
+document.body.ontouchmove = (e) ->
+  if window.CANT_TOUCH_THIS
+    e.preventDefault()
 
-  loadURLElem = document.querySelector("button#loadURL")
+document.querySelector("button#toggleScrolling").onclick = ->
 
-  if loadURLElem
-    loadURLElem.onclick = ->
-      console.log "loadURL started"
-      now = new Date
+  if window.CANT_TOUCH_THIS
+    showIndicator("scroll enabled")
+    window.CANT_TOUCH_THIS = false
+  else
+    showIndicator("scroll prevented")
+    window.CANT_TOUCH_THIS = true
 
-      window.location.href="nativeBridge://ping?webview_started_at=#{now.toJSON()}&pong=pong"
 
-      indicatorElem = document.querySelector("#indicator")
-      indicatorElem.textContent = "performed"
-      indicatorElem.style.visibility="visible"
 
-      setTimeout =>
-        indicatorElem.style.visibility = "hidden"
-      , 500
+window.stats = new Stats
+stats.setMode(0) # 0: fps, 1: ms
+
+stats.domElement.style.position = 'fixed'
+stats.domElement.style.right = '0px'
+stats.domElement.style.top = '0px'
+
+document.body.appendChild( stats.domElement )
+
+
+window.loadURLThing = () ->
+  now = new Date
+  console.log "loadURL started"
+  window.location.href="nativeBridge://ping?webview_started_at=#{now.toJSON()}&pong=pong"
+
+
+window.showIndicator = (message) ->
+  indicatorElem = document.querySelector("#indicator")
+  indicatorElem.textContent = message
+  indicatorElem.style.visibility="visible"
+
+  setTimeout =>
+    indicatorElem.style.visibility = "hidden"
+  , 500
+
+
+
+document.querySelector("button#loadURL").onclick = ->
+
+  if window.loadURLInterval
+    showIndicator("stopped!")
+    clearInterval(window.loadURLInterval)
+    delete window.loadURLInterval
+    return
+
+  window.loadURLInterval = setInterval =>
+    loadURLThing()
+  , 250
+
+  showIndicator("started!")
+
 
 window.pong = (fromNativeJSON) ->
   fromNative = JSON.parse(fromNativeJSON).result
