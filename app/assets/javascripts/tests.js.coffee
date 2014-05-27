@@ -1,6 +1,3 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
 
 document.body.ontouchmove = (e) ->
   if window.CANT_TOUCH_THIS
@@ -26,6 +23,29 @@ stats.domElement.style.top = '0px'
 
 document.body.appendChild( stats.domElement )
 
+window.showIndicator = (message, delay=0) ->
+
+  if delay > 0
+    setTimeout ->
+      showIndicator(message)
+    , delay
+    return
+
+  indicatorElem = document.querySelector("#indicator")
+  indicatorElem.textContent = message
+
+  if indicatorElem.style.visibility == "visible"
+    # extend the timeout by cancelling it first
+    window.clearTimeout window.showIndicatorTimeout
+  else
+    indicatorElem.style.visibility="visible"
+
+  window.showIndicatorTimeout = setTimeout =>
+    indicatorElem.style.visibility = "hidden"
+  , 1500
+
+
+
 window.payloadGenerator = (length) ->
   text = ""
   possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -35,71 +55,64 @@ window.payloadGenerator = (length) ->
 
   return text
 
-window.loadURLThing = (payload, pongBack, pongPayloadLength, callback) ->
+window.sendWithWindowHref = (opts={}) ->
+
   now = new Date
-  console.log "loadURL started"
-  requestURL = "nativeBridge://ping?webview_started_at=#{now.toJSON()}&payload='#{payload}'"
+  requestURL = "nativeBridge://ping?webview_started_at=#{now.toJSON()}&payload='#{opts.payload}'"
 
-  if pongBack
-    requestURL = requestURL + "&pong=pong&pongPayloadLength=#{pongPayloadLength}"
-
-  if callback
-    requestURL = requestURL + "&callback=#{callback}"
+  if opts.fps
+    requestURL += "&fps=true"
 
   window.location.href=requestURL
 
 
-window.showIndicator = (message) ->
-  indicatorElem = document.querySelector("#indicator")
-  indicatorElem.textContent = message
-  indicatorElem.style.visibility="visible"
+
+window.intervalSender = (opts={}) ->
+
+  messagesLeft = opts.messagesLeft || opts.messages
+  messagesLeft = messagesLeft - 1
 
   setTimeout =>
-    indicatorElem.style.visibility = "hidden"
-  , 500
+    window.showIndicator "Sending message #{opts.messages - messagesLeft}/#{opts.messages}"
+
+    if opts.method == "location.href"
+      sendWithWindowHref
+        payload: opts.payload
+        fps: opts.fps
 
 
-window.performLoadURL = () ->
-  return unless window.intervalSending or window.loadURLSending
+    if messagesLeft > 0
+      betterOpts = opts
+      betterOpts.messagesLeft = messagesLeft
+      window.intervalSender(betterOpts)
+    else
+      window.showIndicator "DONE", 750
 
-  payloadLength = parseInt(document.querySelector("#payloadLengthElem").value)
-
-  intervalLength = parseInt(document.querySelector("#intervalLengthElem").value)
-  pongBack = document.querySelector("#pongElem").value == "yes"
-  pongPayloadLength = parseInt(document.querySelector("#pongPayloadLengthElem").value)
-
-  payload = window.payloadGenerator(1024*payloadLength)
-
-  if intervalSending
-    window.loadURLInterval = setInterval =>
-      loadURLThing(payload, pongBack, (pongPayloadLength*1024))
-    , intervalLength
-  else
-    loadURLThing(payload, pongBack, (pongPayloadLength*1024), 'performLoadURL')
+  , opts.interval
 
 
 document.querySelector("button#loadURL").onclick = ->
-  if window.intervalSending or window.loadURLSending
-    showIndicator("stopped!")
 
-    if window.loadURLInterval
-      clearInterval(window.loadURLInterval)
-      delete window.loadURLInterval
-      delete window.intervalSending
+  method = document.querySelector("#methodElem").value
+  interval = parseInt(document.querySelector("#intervalLengthElem").value)
+  messages = parseInt(document.querySelector("#messagesElem").value)
+  fps = (document.querySelector("#fpsElem").value == "yes")
 
-    if window.loadURLSending
-      delete window.loadURLSending
+  payloadLength = parseInt(document.querySelector("#payloadLengthElem").value)
 
-    return
+  payload = window.payloadGenerator(1024*payloadLength)
 
-  window.intervalSending = document.querySelector("#intervalElem").value == "yes"
+  showIndicator("started #{method} (every #{interval}ms) with #{payloadLength} of payload")
 
-  unless window.intervalSending
-    window.loadURLSending = true
+  intervalSender
+    method: method
+    interval: interval
+    messages: messages
+    payload: payload
+    fps: fps
 
-  showIndicator("started!")
-  performLoadURL()
 
+###
 window.pong = (fromNativeJSON) ->
   fromNative = JSON.parse(fromNativeJSON)
   now = new Date
@@ -127,4 +140,5 @@ window.pong = (fromNativeJSON) ->
       console.log "put suges"
 
   if window.loadURLSending
-    performLoadURL()
+    performLocationHref()
+###

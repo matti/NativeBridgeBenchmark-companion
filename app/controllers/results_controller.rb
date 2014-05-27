@@ -12,7 +12,7 @@ class ResultsController < ApplicationController
     respond_to do |format|
       if @result.save
         format.html { redirect_to edit_test_result_path(@test, @result), notice: 'Result was successfully created.' }
-        format.json { render :show, status: :created }
+        format.json { render json: {}, status: :created }
       else
         format.html { render :new }
         format.json { render json: @result.errors, status: :unprocessable_entity }
@@ -28,7 +28,7 @@ class ResultsController < ApplicationController
     respond_to do |format|
       if @result.update(result_params)
         format.html { redirect_to edit_test_result_path(@test, @result), notice: 'Result was successfully updated.' }
-        format.json { render :show, status: :ok }
+        format.json { render json: {}, status: :ok }
       else
         format.html { render :edit }
         format.json { render json: @result.errors, status: :unprocessable_entity }
