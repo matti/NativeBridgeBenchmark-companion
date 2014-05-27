@@ -69,6 +69,13 @@ window.sendWithLocationHref = (opts={}) ->
 window.sendWithLocationHash = (opts={}) ->
   window.location.hash=generateRequestURL(opts)
 
+window.sendWithXHRSync = (opts={}) ->
+  alert "not working, needs code in native"
+  xhr = new XMLHttpRequest()
+  xhr.open "get", generateRequestURL(opts), false
+  xhr.send()
+
+
 window.sendWithAClick = (opts={}) ->
   aElem = document.createElement("a")
   aElem.href = generateRequestURL(opts)
@@ -107,6 +114,12 @@ window.intervalSender = (opts={}) ->
         payload: opts.payload
         fps: opts.fps
         method: opts.method
+    else if opts.method == "xhr.sync"
+      sendWithXHRSync
+        payload: opts.payload
+        fps: opts.fps
+        method: opts.method
+
 
     if messagesLeft > 0
       betterOpts = opts
