@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140527144841) do
+ActiveRecord::Schema.define(version: 20140527151251) do
 
   create_table "results", force: true do |t|
     t.integer  "test_id"
@@ -27,6 +27,8 @@ ActiveRecord::Schema.define(version: 20140527144841) do
     t.integer  "native_payload_length"
     t.string   "method"
     t.string   "method_name"
+    t.float    "webview_to_native_delta"
+    t.float    "native_to_webview_delta"
   end
 
   add_index "results", ["test_id"], name: "index_results_on_test_id"

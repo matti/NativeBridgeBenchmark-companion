@@ -69,6 +69,10 @@ window.sendWithLocationHref = (opts={}) ->
 window.sendWithLocationHash = (opts={}) ->
   window.location.hash=generateRequestURL(opts)
 
+window.sendWithAClick = (opts={}) ->
+  aElem = document.createElement("a")
+  aElem.href = generateRequestURL(opts)
+  aElem.click()
 
 
 window.intervalSender = (opts={}) ->
@@ -86,6 +90,11 @@ window.intervalSender = (opts={}) ->
         method: opts.method
     else if opts.method == "location.hash"
       sendWithLocationHash
+        payload: opts.payload
+        fps: opts.fps
+        method: opts.method
+    else if opts.method == "a.click"
+      sendWithAClick
         payload: opts.payload
         fps: opts.fps
         method: opts.method

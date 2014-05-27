@@ -1,4 +1,8 @@
   <ul>
     <li>samples: <%= @test.results.size %></li>
-    <li>avg fps: <%= @test.results.average("fps")%></li>
+    <% if @test.results.any? %>
+      <li>avg fps: <%= @test.results.average("fps")%></li>
+      <li>avg webview2native <%= @test.results.average("webview_to_native_delta").round(4) %></li>
+      <li>avg native2webview <%= @test.results.average("native_to_webview_delta").round(4) %></li>
+    <% end %>
   </ul>
