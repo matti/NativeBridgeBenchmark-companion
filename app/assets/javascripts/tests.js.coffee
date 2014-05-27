@@ -55,26 +55,19 @@ window.payloadGenerator = (length) ->
 
   return text
 
-window.sendWithLocationHref = (opts={}) ->
 
+generateRequestURL = (opts={}) ->
   now = new Date
-  requestURL = "nativeBridge://ping?webview_started_at=#{now.toJSON()}&payload=#{opts.payload}"
+  requestURL = "nativebridge://ping?webview_started_at=#{now.toJSON()}&payload=#{opts.payload}&method_name=#{opts.method}"
 
   if opts.fps
     requestURL += "&fps=true"
 
-  window.location.href=requestURL
-
+window.sendWithLocationHref = (opts={}) ->
+  window.location.href=generateRequestURL(opts)
 
 window.sendWithLocationHash = (opts={}) ->
-
-  now = new Date
-  requestHash = "nativeBridge://ping?webview_started_at=#{now.toJSON()}&payload=#{opts.payload}"
-
-  if opts.fps
-    requestHash += "&fps=true"
-
-  window.location.hash=requestHash
+  window.location.hash=generateRequestURL(opts)
 
 
 
@@ -90,10 +83,12 @@ window.intervalSender = (opts={}) ->
       sendWithLocationHref
         payload: opts.payload
         fps: opts.fps
+        method: opts.method
     else if opts.method == "location.hash"
       sendWithLocationHash
         payload: opts.payload
         fps: opts.fps
+        method: opts.method
 
     if messagesLeft > 0
       betterOpts = opts
