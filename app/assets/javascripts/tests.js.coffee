@@ -58,10 +58,8 @@ window.payloadGenerator = (length) ->
 
 generateRequestURL = (opts={}) ->
   now = new Date
-  requestURL = "nativebridge://ping?webview_started_at=#{now.toJSON()}&payload=#{opts.payload}&method_name=#{opts.method}"
+  requestURL = "nativebridge://ping?webview_started_at=#{now.toJSON()}&payload=#{opts.payload}&method_name=#{opts.method}&fps=#{opts.currentFps}"
 
-  if opts.fps
-    requestURL += "&fps=true"
 
 window.sendWithLocationHref = (opts={}) ->
   window.location.href=generateRequestURL(opts)
@@ -91,34 +89,43 @@ window.intervalSender = (opts={}) ->
   messagesLeft = opts.messagesLeft || opts.messages
   messagesLeft = messagesLeft - 1
 
+  # TODO: check that works also:
+
+  currentFps = parseInt(stats.domElement.firstChild.textContent)
+
+  if window.COULD_NOT_ANIMATE_EVEN_ONCE
+    currentFps = 0
+  else
+    window.COULD_NOT_ANIMATE_EVEN_ONCE = true
+
   setTimeout =>
     window.showIndicator "Sending message #{opts.messages - messagesLeft}/#{opts.messages}"
 
     if opts.method == "location.href"
       sendWithLocationHref
         payload: opts.payload
-        fps: opts.fps
         method: opts.method
+        currentFps: currentFps
     else if opts.method == "location.hash"
       sendWithLocationHash
         payload: opts.payload
-        fps: opts.fps
         method: opts.method
+        currentFps: currentFps
     else if opts.method == "a.click"
       sendWithAClick
         payload: opts.payload
-        fps: opts.fps
         method: opts.method
+        currentFps: currentFps
     else if opts.method == "iframe.src"
       sendWithIFrame
         payload: opts.payload
-        fps: opts.fps
         method: opts.method
+        currentFps: currentFps
     else if opts.method == "xhr.sync"
       sendWithXHRSync
         payload: opts.payload
-        fps: opts.fps
         method: opts.method
+        currentFps: currentFps
 
 
     if messagesLeft > 0
@@ -131,12 +138,11 @@ window.intervalSender = (opts={}) ->
   , opts.interval
 
 
-document.querySelector("button#loadURL").onclick = ->
+document.querySelector("button#perform").onclick = ->
 
   method = document.querySelector("#methodElem").value
   interval = parseInt(document.querySelector("#intervalLengthElem").value)
   messages = parseInt(document.querySelector("#messagesElem").value)
-  fps = (document.querySelector("#fpsElem").value == "yes")
 
   payloadLength = parseInt(document.querySelector("#payloadLengthElem").value)
 
@@ -149,7 +155,6 @@ document.querySelector("button#loadURL").onclick = ->
     interval: interval
     messages: messages
     payload: payload
-    fps: fps
 
 
 ###
