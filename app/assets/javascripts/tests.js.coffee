@@ -68,9 +68,8 @@ window.sendWithLocationHash = (opts={}) ->
   window.location.hash=generateRequestURL(opts)
 
 window.sendWithXHRSync = (opts={}) ->
-  alert "not working, needs code in native"
   xhr = new XMLHttpRequest()
-  xhr.open "get", generateRequestURL(opts), false
+  xhr.open "get", "http://#{generateRequestURL(opts)}", true
   xhr.send()
 
 
