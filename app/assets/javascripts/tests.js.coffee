@@ -67,11 +67,10 @@ window.sendWithLocationHref = (opts={}) ->
 window.sendWithLocationHash = (opts={}) ->
   window.location.hash=generateRequestURL(opts)
 
-window.sendWithXHRSync = (opts={}) ->
+window.sendWithXHR = (opts={}) ->
   xhr = new XMLHttpRequest()
-  xhr.open "get", "http://#{generateRequestURL(opts)}", true
+  xhr.open "get", "http://#{generateRequestURL(opts)}", opts.async
   xhr.send()
-
 
 window.sendWithAClick = (opts={}) ->
   aElem = document.createElement("a")
@@ -130,10 +129,17 @@ window.intervalSender = (opts={}) ->
         method: opts.method
         currentFps: currentFps
     else if opts.method == "xhr.sync"
-      sendWithXHRSync
+      sendWithXHR
         payload: opts.payload
         method: opts.method
         currentFps: currentFps
+        async: false
+    else if opts.method == "xhr.async"
+      sendWithXHR
+        payload: opts.payload
+        method: opts.method
+        currentFps: currentFps
+        async: true
     else if opts.method == "jscore.sync"
       sendWithJSCoreSync
         payload: opts.payload
