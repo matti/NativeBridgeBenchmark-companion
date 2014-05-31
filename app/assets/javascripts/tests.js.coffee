@@ -86,6 +86,9 @@ window.sendWithIFrame = (opts={}) ->
 window.sendWithJSCoreSync = (opts={}) ->
   window.viewController.nativeBridge(generateRequestURL(opts))
 
+window.sendWithWebSockets = (opts={}) ->
+  window.WebSocketTest2(generateRequestURL(opts))
+
 window.intervalSender = (opts={}) ->
 
   messagesLeft = opts.messagesLeft || opts.messages
@@ -130,6 +133,11 @@ window.intervalSender = (opts={}) ->
         currentFps: currentFps
     else if opts.method == "jscore.sync"
       sendWithJSCoreSync
+        payload: opts.payload
+        method: opts.method
+        currentFps: currentFps
+    else if opts.method == "websockets"
+      sendWithWebSockets
         payload: opts.payload
         method: opts.method
         currentFps: currentFps
