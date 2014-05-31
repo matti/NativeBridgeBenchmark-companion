@@ -16,8 +16,8 @@
 
 #indicator {
   position: fixed;
-  top: 10px;
-  left: 50%;
+  top: 0px;
+  left: 30%;
   visibility: hidden;
   background-color: yellow;
   z-index: 9999999;
