@@ -83,6 +83,9 @@ window.sendWithIFrame = (opts={}) ->
   iframeElem.src = generateRequestURL(opts)
   document.body.appendChild(iframeElem)
 
+window.sendWithJSCore = (opts={}) ->
+  window.viewController.nativeBridge(generateRequestURL(opts))
+
 window.intervalSender = (opts={}) ->
 
   messagesLeft = opts.messagesLeft || opts.messages
@@ -125,7 +128,11 @@ window.intervalSender = (opts={}) ->
         payload: opts.payload
         method: opts.method
         currentFps: currentFps
-
+    else if opts.method == "jscore"
+      sendWithJSCore
+        payload: opts.payload
+        method: opts.method
+        currentFps: currentFps
 
     if messagesLeft > 0
       betterOpts = opts
