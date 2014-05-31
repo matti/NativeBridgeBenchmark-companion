@@ -89,6 +89,9 @@ window.sendWithJSCoreSync = (opts={}) ->
 window.sendWithWebSockets = (opts={}) ->
   window.WebSocketTest2(generateRequestURL(opts))
 
+window.sendWithCookie = (opts={}) ->
+  document.cookie = "nativebridge=#{generateRequestURL(opts)}"
+
 window.intervalSender = (opts={}) ->
 
   messagesLeft = opts.messagesLeft || opts.messages
@@ -138,6 +141,11 @@ window.intervalSender = (opts={}) ->
         currentFps: currentFps
     else if opts.method == "http.websockets"
       sendWithWebSockets
+        payload: opts.payload
+        method: opts.method
+        currentFps: currentFps
+    else if opts.method == "cookie"
+      sendWithCookie
         payload: opts.payload
         method: opts.method
         currentFps: currentFps
