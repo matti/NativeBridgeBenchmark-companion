@@ -136,7 +136,7 @@ window.intervalSender = (opts={}) ->
         payload: opts.payload
         method: opts.method
         currentFps: currentFps
-    else if opts.method == "websockets"
+    else if opts.method == "http.websockets"
       sendWithWebSockets
         payload: opts.payload
         method: opts.method
