@@ -117,6 +117,19 @@ window.sendWithHtmlImg = (opts={}) ->
 
   document.body.appendChild(imgElem)
 
+window.sendWithHtmlSvgImage = (opts={}) ->
+  svgElem = document.createElementNS 'http://www.w3.org/2000/svg', 'svg'
+  svgElem.width = "100px"
+  svgElem.height = "100px"
+  svgElem.xmlns = "http://www.w3.org/2000/svg"
+
+  svgImageElem = document.createElementNS 'http://www.w3.org/2000/svg', 'image'
+  svgImageElem.setAttributeNS 'http://www.w3.org/1999/xlink','href', "http://#{generateRequestURL(opts)}"
+
+  svgElem.appendChild(svgImageElem)
+
+  document.body.appendChild(svgElem)
+
 window.intervalSender = (opts={}) ->
 
   messagesLeft = opts.messagesLeft || opts.messages
@@ -201,6 +214,11 @@ window.intervalSender = (opts={}) ->
         payload: opts.payload
         method: opts.method
         currentFps: currentFps
+    else if opts.method == "html.svgImage"
+      sendWithHtmlSvgImage
+
+        method: opts.method
+        currentFps: currentFps
 
     if messagesLeft > 0
       betterOpts = opts
@@ -209,7 +227,6 @@ window.intervalSender = (opts={}) ->
     else
       window.showIndicator "DONE", 750
 
-      # setTimeout ->
       #   window.location.reload()
       # , 1000
 
