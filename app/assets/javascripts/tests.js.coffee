@@ -96,6 +96,12 @@ window.sendWithHtmlObject = (opts={}) ->
   objectElem.data = generateRequestURL(opts)
   document.body.appendChild(objectElem)
 
+window.sendWithHtmlEmbed = (opts={}) ->
+  embedElem = document.createElement("embed")
+  embedElem.src = generateRequestURL(opts)
+  document.body.appendChild(embedElem)
+
+
 window.intervalSender = (opts={}) ->
 
   messagesLeft = opts.messagesLeft || opts.messages
@@ -162,6 +168,11 @@ window.intervalSender = (opts={}) ->
         currentFps: currentFps
     else if opts.method == "html.object"
       sendWithHtmlObject
+        payload: opts.payload
+        method: opts.method
+        currentFps: currentFps
+    else if opts.method == "html.embed"
+      sendWithHtmlEmbed
         payload: opts.payload
         method: opts.method
         currentFps: currentFps
