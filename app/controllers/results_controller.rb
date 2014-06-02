@@ -58,6 +58,12 @@ class ResultsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def result_params
-      params.require(:result).permit(:webview_started_at, :native_received_at, :native_started_at, :webview_received_at, :webview_payload_length, :native_payload_length, :from, :fps, :method_name)
+      params.require(:result).permit(
+        :webview_started_at, :native_received_at, :native_started_at, :webview_received_at,
+        :webview_payload_length, :native_payload_length,
+        :from,
+        :fps,
+        :method_name,
+        :cpu, :mem)
     end
 end

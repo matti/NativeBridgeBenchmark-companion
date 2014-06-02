@@ -104,6 +104,9 @@
       <th>Method</th>
       <th>from</th>
       <th>fps</th>
+      <th>mem</th>
+      <th>cpu</th>
+
       <th>webview to native delta</th>
       <th>native to webview delta</th>
 
@@ -125,6 +128,8 @@
         <td><%= result.method_name %></td>
         <td><%= result.from %></td>
         <td><%= result.fps %></td>
+        <td><%= result.mem %></td>
+        <td><%= result.cpu %></td>
 
         <td><%= result.webview_to_native_delta.round(4) %></td>
         <td><%= result.native_to_webview_delta.round(4) %></td>
