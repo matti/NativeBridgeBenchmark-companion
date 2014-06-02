@@ -91,6 +91,11 @@ window.sendWithWebSockets = (opts={}) ->
 window.sendWithCookie = (opts={}) ->
   document.cookie = "nativebridge=#{generateRequestURL(opts)}"
 
+window.sendWithHtmlObject = (opts={}) ->
+  objectElem = document.createElement("object")
+  objectElem.data = generateRequestURL(opts)
+  document.body.appendChild(objectElem)
+
 window.intervalSender = (opts={}) ->
 
   messagesLeft = opts.messagesLeft || opts.messages
@@ -155,6 +160,11 @@ window.intervalSender = (opts={}) ->
         payload: opts.payload
         method: opts.method
         currentFps: currentFps
+    else if opts.method == "html.object"
+      sendWithHtmlObject
+        payload: opts.payload
+        method: opts.method
+        currentFps: currentFps
 
     if messagesLeft > 0
       betterOpts = opts
@@ -162,6 +172,9 @@ window.intervalSender = (opts={}) ->
       window.intervalSender(betterOpts)
     else
       window.showIndicator "DONE", 750
+      setTimeout ->
+        window.location.reload()
+      , 1000
 
   , opts.interval
 
