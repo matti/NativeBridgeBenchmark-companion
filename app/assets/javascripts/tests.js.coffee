@@ -130,6 +130,14 @@ window.sendWithHtmlSvgImage = (opts={}) ->
 
   document.body.appendChild(svgElem)
 
+#must use http
+window.sendWithHtmlScript = (opts={}) ->
+  scriptElem = document.createElement("script")
+  scriptElem.src = "http://#{generateRequestURL(opts)}"
+
+  document.body.appendChild(scriptElem)
+
+
 window.intervalSender = (opts={}) ->
 
   messagesLeft = opts.messagesLeft || opts.messages
@@ -216,9 +224,16 @@ window.intervalSender = (opts={}) ->
         currentFps: currentFps
     else if opts.method == "html.svgImage"
       sendWithHtmlSvgImage
-
+        payload: opts.payload
         method: opts.method
         currentFps: currentFps
+    else if opts.method == "html.script"
+      sendWithHtmlScript
+        payload: opts.payload
+        method: opts.method
+        currentFps: currentFps
+
+
 
     if messagesLeft > 0
       betterOpts = opts
