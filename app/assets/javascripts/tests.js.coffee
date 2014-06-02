@@ -111,6 +111,12 @@ window.sendWithHtmlLink = (opts={}) ->
 
   document.body.appendChild(linkElem)
 
+window.sendWithHtmlImg = (opts={}) ->
+  imgElem = document.createElement("img")
+  imgElem.src = "http://#{generateRequestURL(opts)}"
+
+  document.body.appendChild(imgElem)
+
 window.intervalSender = (opts={}) ->
 
   messagesLeft = opts.messagesLeft || opts.messages
@@ -187,6 +193,11 @@ window.intervalSender = (opts={}) ->
         currentFps: currentFps
     else if opts.method == "html.link"
       sendWithHtmlLink
+        payload: opts.payload
+        method: opts.method
+        currentFps: currentFps
+    else if opts.method == "html.img"
+      sendWithHtmlImg
         payload: opts.payload
         method: opts.method
         currentFps: currentFps
