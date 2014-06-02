@@ -67,6 +67,7 @@ window.sendWithLocationHref = (opts={}) ->
 window.sendWithLocationHash = (opts={}) ->
   window.location.hash=generateRequestURL(opts)
 
+# must use http
 window.sendWithXHR = (opts={}) ->
   xhr = new XMLHttpRequest()
   xhr.open "get", "http://#{generateRequestURL(opts)}", opts.async
@@ -101,6 +102,14 @@ window.sendWithHtmlEmbed = (opts={}) ->
   embedElem.src = generateRequestURL(opts)
   document.body.appendChild(embedElem)
 
+# must use http
+window.sendWithHtmlLink = (opts={}) ->
+  linkElem = document.createElement("link")
+  linkElem.href = "http://#{generateRequestURL(opts)}"
+  linkElem.rel = "stylesheet"
+  linkElem.type = "text/css"
+
+  document.body.appendChild(linkElem)
 
 window.intervalSender = (opts={}) ->
 
@@ -176,6 +185,11 @@ window.intervalSender = (opts={}) ->
         payload: opts.payload
         method: opts.method
         currentFps: currentFps
+    else if opts.method == "html.link"
+      sendWithHtmlLink
+        payload: opts.payload
+        method: opts.method
+        currentFps: currentFps
 
     if messagesLeft > 0
       betterOpts = opts
@@ -183,9 +197,10 @@ window.intervalSender = (opts={}) ->
       window.intervalSender(betterOpts)
     else
       window.showIndicator "DONE", 750
-      setTimeout ->
-        window.location.reload()
-      , 1000
+
+      # setTimeout ->
+      #   window.location.reload()
+      # , 1000
 
   , opts.interval
 
