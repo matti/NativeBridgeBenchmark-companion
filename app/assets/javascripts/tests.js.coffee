@@ -78,7 +78,7 @@ window.sendWithAClick = (opts={}) ->
   aElem.href = generateRequestURL(opts)
   aElem.click()
 
-window.sendWithIFrame = (opts={}) ->
+window.sendWithHtmlIframe = (opts={}) ->
   iframeElem = document.createElement("iframe")
   iframeElem.src = generateRequestURL(opts)
   document.body.appendChild(iframeElem)
@@ -170,8 +170,8 @@ window.intervalSender = (opts={}) ->
         payload: opts.payload
         method: opts.method
         currentFps: currentFps
-    else if opts.method == "iframe.src"
-      sendWithIFrame
+    else if opts.method == "html.iframe"
+      sendWithHtmlIframe
         payload: opts.payload
         method: opts.method
         currentFps: currentFps
