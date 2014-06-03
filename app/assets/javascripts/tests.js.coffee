@@ -137,6 +137,8 @@ window.sendWithHtmlScript = (opts={}) ->
 
   document.body.appendChild(scriptElem)
 
+window.sendWithLocalStorage = (opts={}) ->
+  localStorage.setItem("nativebridge#{opts.currentMessageIndex}", generateRequestURL(opts))
 
 window.intervalSender = (opts={}) ->
 
@@ -153,7 +155,8 @@ window.intervalSender = (opts={}) ->
     window.COULD_NOT_ANIMATE_EVEN_ONCE = true
 
   setTimeout =>
-    window.showIndicator "Sending message #{opts.messages - messagesLeft}/#{opts.messages}"
+    currentMessageIndex = opts.messages - messagesLeft
+    window.showIndicator "Sending message #{currentMessageIndex}/#{opts.messages}"
 
     if opts.method == "location.href"
       sendWithLocationHref
@@ -232,6 +235,12 @@ window.intervalSender = (opts={}) ->
         payload: opts.payload
         method: opts.method
         currentFps: currentFps
+    else if opts.method == "localStorage"
+      sendWithLocalStorage
+        payload: opts.payload
+        method: opts.method
+        currentFps: currentFps
+        currentMessageIndex: currentMessageIndex
 
 
 

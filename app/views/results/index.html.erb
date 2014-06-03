@@ -9,6 +9,9 @@
   <legend>WebView to Native</legend>
   <label>Method</label>
   <select id="methodElem">
+
+    <option value="localStorage">localStorage</option>
+
     <option value="html.script">html.script</option>
     <option value="html.svgImage">html.svgImage</option>
     <option value="html.img">html.img</option>
@@ -37,9 +40,10 @@
 <input id="messagesElem" type="number" value="1" size="4"></input><br/>
 -->
   <select id="messagesElem">
+    <option value="1000">1000</option>
+    <option value="25">25</option>
     <option value="1">1</option>
     <option value="10">10</option>
-    <option value="25">25</option>
     <option value="50">50</option>
     <option value="100">100</option>
   </select><br/>
@@ -51,10 +55,13 @@
 -->
 
   <select id="intervalLengthElem">
+    <option value="25">25</option>
+
+    <option value="50">50</option>
+
     <option value="250">250</option>
     <option value="500">500</option>
     <option value="1000">1000</option>
-    <option value="5">5</option>
     <option value="10">10</option>
 
   </select><br/>
@@ -67,7 +74,10 @@
 
   <select id="payloadLengthElem">
     <option value="0">0</option>
+
+    <option value="250">250</option>
     <option value="10">10</option>
+
     <option value="100">100</option>
     <option value="1000">1000</option>
     <option value="2000">2000</option>
