@@ -251,19 +251,39 @@ window.intervalSender = (opts={}) ->
     else
       window.showIndicator "DONE", 750
 
+
+      if getParameterByName("method")
+        nextTestId = parseInt(getParameterByName("next_test_id"))
+
+        # TODO: might prevent weirdbug (101 vs 99)
+        window.setTimeout =>
+          window.location = "/tests/#{nextTestId}/perform"
+        , 1000
+
       #   window.location.reload()
       # , 1000
 
   , opts.interval
 
 
+window.getParameterByName = (name) ->
+  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]")
+  regex = new RegExp("[\\?&]" + name + "=([^&#]*)")
+  results = regex.exec(location.search)
+  if results
+    decodeURIComponent(results[1].replace(/\+/g, " "))
+  else
+    null
+
+
 document.querySelector("button#perform").onclick = ->
 
-  method = document.querySelector("#methodElem").value
-  interval = parseInt(document.querySelector("#intervalLengthElem").value)
-  messages = parseInt(document.querySelector("#messagesElem").value)
 
-  payloadLength = parseInt(document.querySelector("#payloadLengthElem").value)
+  method = getParameterByName('method') || document.querySelector("#methodElem").value
+  interval = parseInt(getParameterByName('interval') || document.querySelector("#intervalLengthElem").value)
+  messages = parseInt(getParameterByName('amount') || document.querySelector("#messagesElem").value)
+
+  payloadLength = parseInt(getParameterByName('payload') || document.querySelector("#payloadLengthElem").value)
 
   payload = window.payloadGenerator(1024*payloadLength)
 
@@ -275,6 +295,8 @@ document.querySelector("button#perform").onclick = ->
     messages: messages
     payload: payload
 
+if getParameterByName("method")
+  document.querySelector("button#perform").click()
 
 ###
 window.pong = (fromNativeJSON) ->

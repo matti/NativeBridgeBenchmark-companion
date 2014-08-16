@@ -1,15 +1,35 @@
 class TestsController < ApplicationController
-  before_action :set_test, only: [:show, :edit, :update, :destroy]
+  before_action :set_test, only: [:show, :edit, :update, :destroy, :perform]
 
   def reset
     system("rake db:migrate VERSION=0")
     system("rake db:migrate")
+    system("rake db:setup")
   end
+
 
   # GET /tests
   # GET /tests.json
   def index
     @tests = Test.all
+  end
+
+  def perform
+    unless @test
+      render "all_done"
+    else
+
+    method, amount, interval, payload = @test.name.split('-')
+
+    redirect_to test_results_path(@test, {
+      method: method,
+      amount: amount,
+      interval: interval,
+      payload: payload,
+      next_test_id: (@test.id + 1)
+      })
+    end
+
   end
 
   # GET /tests/1
@@ -69,7 +89,7 @@ class TestsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_test
-      @test = Test.find(params[:id])
+      @test = Test.find_by_id(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

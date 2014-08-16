@@ -1,6 +1,6 @@
 class ResultsController < ApplicationController
   before_action :set_test_and_result, only: [:edit, :update, :destroy]
-  before_action :set_test, only: [:index, :create, :destroy_all]
+  before_action :set_test, only: [:index, :create, :destroy_all, :show]
 
   def index
     @results = @test.results

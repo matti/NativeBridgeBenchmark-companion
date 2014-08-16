@@ -4,6 +4,10 @@ Rails.application.routes.draw do
       delete 'reset'
     end
 
+    member do
+      get 'perform'
+    end
+
     resources :results do
       collection do
         delete 'destroy_all'
