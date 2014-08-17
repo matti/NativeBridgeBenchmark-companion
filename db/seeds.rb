@@ -7,23 +7,86 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 
+# methods = [
+#   "a.click",
+#   "html.iframe",
+#   "cookie",
+#   "jscore.sync",
+#   "xhr.async",
+#   "location.href",
+#   "location.hash"
+# ]
+#
+# message_amounts = [
+#   1000,
+# ]
+#
+# intervals = [
+#   1,
+#   10,
+#   100,
+#   250,
+#   500,
+#   1000
+# ]
+#
+# payloads = [
+#   1,
+#   32,
+#   64,
+#   128,
+#   256,
+#   512
+# ]
+
+
+# methods = [
+#   "a.click",
+#   "html.iframe",
+#   "cookie",
+#   "jscore.sync",
+#   "xhr.async",
+#   "location.href",
+#   "location.hash"
+# ]
+#
+# message_amounts = [
+#   1000
+# ]
+#
+# intervals = [
+#   25
+# ]
+#
+# payloads = [
+#   1,
+#   100,
+#   1000
+# ]
+
 methods = [
   "a.click",
-  "html.iframe"
+  "cookie",
+  "xhr.async",
+  "location.href",
+  "location.hash",
+  "html.iframe",
+  "jscore.sync",
+  "html.script"
 ]
 
 message_amounts = [
-  100,
+  100
 ]
 
 intervals = [
-  25,
-  5
+  25
 ]
 
 payloads = [
-  1000,
-  100
+  1,
+  100,
+  1000
 ]
 
 methods.each do |method|

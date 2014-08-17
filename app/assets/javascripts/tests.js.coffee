@@ -255,10 +255,12 @@ window.intervalSender = (opts={}) ->
       if getParameterByName("method")
         nextTestId = parseInt(getParameterByName("next_test_id"))
 
+        window.showIndicator "waiting 5s..", 750
+
         # TODO: might prevent weirdbug (101 vs 99)
         window.setTimeout =>
           window.location = "/tests/#{nextTestId}/perform"
-        , 1000
+        , 5000
 
       #   window.location.reload()
       # , 1000
@@ -289,11 +291,14 @@ document.querySelector("button#perform").onclick = ->
 
   showIndicator("started #{method} (every #{interval}ms) with #{payloadLength} of payload")
 
-  intervalSender
-    method: method
-    interval: interval
-    messages: messages
-    payload: payload
+  # eliminate touch event fuckup
+  window.setTimeout =>
+    intervalSender
+      method: method
+      interval: interval
+      messages: messages
+      payload: payload
+  , 1000
 
 if getParameterByName("method")
   document.querySelector("button#perform").click()
