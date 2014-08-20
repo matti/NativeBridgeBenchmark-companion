@@ -26,6 +26,7 @@ document.body.appendChild( stats.domElement )
 window.showIndicator = (message, delay=0) ->
 
   if delay > 0
+
     setTimeout ->
       showIndicator(message)
     , delay
@@ -84,7 +85,8 @@ window.sendWithHtmlIframe = (opts={}) ->
   document.body.appendChild(iframeElem)
 
 window.sendWithJSCoreSync = (opts={}) ->
-  window.viewController.nativeBridge(generateRequestURL(opts))
+  requestUrl = generateRequestURL(opts)
+  window.viewController.nativeBridge(requestUrl)
 
 window.sendWithWebSockets = (opts={}) ->
   window.WebSocketTest2(generateRequestURL(opts))
@@ -153,6 +155,8 @@ window.intervalSender = (opts={}) ->
     currentFps = 0
   else
     window.COULD_NOT_ANIMATE_EVEN_ONCE = true
+
+  window.renderloopHighest = 0
 
   setTimeout =>
     currentMessageIndex = opts.messages - messagesLeft
@@ -242,8 +246,6 @@ window.intervalSender = (opts={}) ->
         currentFps: currentFps
         currentMessageIndex: currentMessageIndex
 
-
-
     if messagesLeft > 0
       betterOpts = opts
       betterOpts.messagesLeft = messagesLeft
@@ -267,6 +269,21 @@ window.intervalSender = (opts={}) ->
 
   , opts.interval
 
+window.renderloopElem = document.querySelector("#renderloop");
+
+window.setInterval ->
+  now = Date.now()
+
+  delta = now - window.renderloopLast
+  window.renderloopHighest = delta unless window.renderloopHighest
+
+  if delta > window.renderloopHighest
+    window.renderloopHighest = delta
+
+  window.renderloopElem.textContent = delta + " " + window.renderloopHighest
+
+  window.renderloopLast = now
+, 100
 
 window.getParameterByName = (name) ->
   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]")
@@ -279,26 +296,26 @@ window.getParameterByName = (name) ->
 
 
 document.querySelector("button#perform").onclick = ->
-
-
   method = getParameterByName('method') || document.querySelector("#methodElem").value
   interval = parseInt(getParameterByName('interval') || document.querySelector("#intervalLengthElem").value)
   messages = parseInt(getParameterByName('amount') || document.querySelector("#messagesElem").value)
 
   payloadLength = parseInt(getParameterByName('payload') || document.querySelector("#payloadLengthElem").value)
 
-  payload = window.payloadGenerator(1024*payloadLength)
-
-  showIndicator("started #{method} (every #{interval}ms) with #{payloadLength} of payload")
-
-  # eliminate touch event fuckup
+  showIndicator("generating payload...")
   window.setTimeout =>
-    intervalSender
-      method: method
-      interval: interval
-      messages: messages
-      payload: payload
-  , 1000
+    payload = window.payloadGenerator(1024*payloadLength)
+
+    #eliminate touch event fuckup
+    window.setTimeout =>
+      showIndicator("started #{method} (every #{interval}ms) with #{payloadLength} of payload")
+      intervalSender
+        method: method
+        interval: interval
+        messages: messages
+        payload: payload
+    , 1000
+  , 500
 
 if getParameterByName("method")
   document.querySelector("button#perform").click()

@@ -64,28 +64,59 @@
 #   1000
 # ]
 
+# methods = [
+#   "a.click",
+#   "cookie",
+#   "xhr.async",
+#   "location.href",
+#   "location.hash",
+#   "html.iframe",
+#   "jscore.sync",
+#   "html.script"
+# ]
+#
+# message_amounts = [
+#   100
+# ]
+#
+# intervals = [
+#   25
+# ]
+#
+# payloads = [
+#   1,
+#   100,
+#   1000
+# ]
+#
+# methods.each do |method|
+#   message_amounts.each do |amount|
+#     intervals.each do |interval|
+#       payloads.each do |payload|
+#         test_name = "#{method}-#{amount}-#{interval}-#{payload}"
+#         Test.create!(:name => test_name)
+#         puts "#{test_name} created"
+#       end
+#     end
+#   end
+# end
+
+
+
 methods = [
-  "a.click",
-  "cookie",
-  "xhr.async",
-  "location.href",
-  "location.hash",
-  "html.iframe",
-  "jscore.sync",
-  "html.script"
+  "http.websockets",
+  "jscore.sync"
 ]
 
 message_amounts = [
-  100
+  10
 ]
 
 intervals = [
-  25
+  1000
 ]
 
 payloads = [
-  1,
-  100,
   1000
 ]
 

@@ -2,6 +2,8 @@
 require "./config/environment"
 require "csv"
 
+system("rm -rf export/*")
+
 Test.all.each do |test|
 
   fields = ["id", "method_name", "fps", "mem", "cpu", "webview_to_native_delta"]
@@ -27,5 +29,5 @@ Test.all.each do |test|
     end
   end
 
-  File.write("export/#{test.name}.csv", csv_string)
+  File.write("export/#{test_name}.csv", csv_string)
 end

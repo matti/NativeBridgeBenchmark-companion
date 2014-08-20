@@ -1,5 +1,7 @@
 <script src="http://localhost:31337/WebSocketTest2.js"></script>
 
+<h1 id="renderloop">-1</h1>
+
 <canvas id="myCanvas" width="320" height="200"></canvas>
 
 <button id="toggleScrolling">Toggle scrolling</button>
@@ -9,13 +11,16 @@
   <legend>WebView to Native</legend>
   <label>Method</label>
   <select id="methodElem">
+<option value="http.websockets">http.websockets</option>
+
+<option value="jscore.sync">jscore.sync</option>
+
+
 <option value="html.iframe">html.iframe</option>
 
-<option value="http.websockets">http.websockets</option>
 
     <option value="location.href">location.href</option>
 
-    <option value="jscore.sync">jscore.sync</option>
 
     <option value="localStorage">localStorage</option>
 
@@ -42,19 +47,17 @@
 <!--
 <input id="messagesElem" type="number" value="1" size="4"></input><br/>
 -->
-  <select id="messagesElem">
-<option value="1000">1000</option>
 
-<option value="2">2</option>
+  <select id="messagesElem">
+<option value="100">100</option>
 
 <option value="1">1</option>
-
-
+<option value="2">2</option>
+<option value="1000">1000</option>
     <option value="10">10</option>
 
     <option value="25">25</option>
     <option value="50">50</option>
-    <option value="100">100</option>
   </select><br/>
 
   <label>Interval length:</label>
@@ -64,11 +67,12 @@
 -->
 
   <select id="intervalLengthElem">
+<option value="1000">1000</option>
+
     <option value="100">100</option>
 
     <option value="25">25</option>
 
-    <option value="1000">1000</option>
 
     <option value="5000">5000</option>
 
@@ -88,14 +92,18 @@
 -->
 
   <select id="payloadLengthElem">
-<option value="100">100</option>
+<option value="1000">1000</option>
 
-<option value="1">1</option>
+<option value="64">31</option>
 
 <option value="0">0</option>
 
 
-    <option value="1000">1000</option>
+
+
+<option value="1">1</option>
+
+
 
 
 
@@ -107,6 +115,7 @@
     <option value="3000">3000</option>
     <option value="4000">4000</option>
     <option value="5000">5000</option>
+<option value="10000">10000</option>
 
   </select><br/>
 
