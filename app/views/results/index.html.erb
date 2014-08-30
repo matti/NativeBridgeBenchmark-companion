@@ -11,6 +11,7 @@
   <legend>WebView to Native</legend>
   <label>Method</label>
   <select id="methodElem">
+    <option value="location.href">location.href</option>
     <option value="html.iframe.same">html.iframe.same</option>
 
     <option value="html.iframe">html.iframe</option>
@@ -146,6 +147,7 @@
       <th>fps</th>
       <th>mem</th>
       <th>cpu</th>
+      <th>render paused</th>
 
       <th>webview to native delta</th>
       <th>native to webview delta</th>
@@ -170,6 +172,7 @@
         <td><%= result.fps %></td>
         <td><%= result.mem %></td>
         <td><%= result.cpu %></td>
+        <td><%= result.render_paused %></td>
 
         <td><%= result.webview_to_native_delta.round(4) %></td>
         <td><%= result.native_to_webview_delta.round(4) %></td>

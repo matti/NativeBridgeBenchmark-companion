@@ -59,8 +59,9 @@ window.payloadGenerator = (length) ->
 
 generateRequestURL = (opts={}) ->
   now = new Date
-  requestURL = "nativebridge://ping?webview_started_at=#{now.toJSON()}&payload=#{opts.payload}&method_name=#{opts.method}&fps=#{opts.currentFps}"
+  requestURL = "nativebridge://ping?webview_started_at=#{now.toJSON()}&payload=#{opts.payload}&method_name=#{opts.method}&fps=#{opts.currentFps}&render_paused=#{opts.currentRenderLoopPause}"
 
+  return requestURL;
 
 window.sendWithLocationHref = (opts={}) ->
   window.location.href=generateRequestURL(opts)
@@ -160,17 +161,19 @@ window.intervalSender = (opts={}) ->
   else
     window.COULD_NOT_ANIMATE_EVEN_ONCE = true
 
-  window.renderloopHighest = 0
+  nativeOptions =
+    payload: opts.payload
+    method: opts.method
+    currentFps: currentFps
+    currentRenderLoopPause: window.renderloopElem.textContent
 
   setTimeout =>
     currentMessageIndex = opts.messages - messagesLeft
     window.showIndicator "Sending message #{currentMessageIndex}/#{opts.messages}"
 
     if opts.method == "location.href"
-      sendWithLocationHref
-        payload: opts.payload
-        method: opts.method
-        currentFps: currentFps
+      sendWithLocationHref nativeOptions
+
     else if opts.method == "location.hash"
       sendWithLocationHash
         payload: opts.payload
@@ -255,6 +258,8 @@ window.intervalSender = (opts={}) ->
         currentFps: currentFps
         currentMessageIndex: currentMessageIndex
 
+    window.renderloopHighest = 0
+    
     if messagesLeft > 0
       betterOpts = opts
       betterOpts.messagesLeft = messagesLeft
@@ -278,21 +283,25 @@ window.intervalSender = (opts={}) ->
 
   , opts.interval
 
+
+window.renderLoopInterval = 10
 window.renderloopElem = document.querySelector("#renderloop");
 
 window.setInterval ->
   now = Date.now()
 
-  delta = now - window.renderloopLast
+  delta = now - window.renderloopLast - window.renderLoopInterval
+
   window.renderloopHighest = delta unless window.renderloopHighest
 
   if delta > window.renderloopHighest
     window.renderloopHighest = delta
 
-  window.renderloopElem.textContent = delta + " " + window.renderloopHighest
+  #window.renderloopElem.textContent = delta + " " + window.renderloopHighest
+  window.renderloopElem.textContent = window.renderloopHighest
 
   window.renderloopLast = now
-, 100
+, window.renderLoopInterval
 
 window.getParameterByName = (name) ->
   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]")
@@ -317,6 +326,8 @@ document.querySelector("button#perform").onclick = ->
 
     #eliminate touch event fuckup
     window.setTimeout =>
+      window.renderloopHighest = 0
+
       showIndicator("started #{method} (every #{interval}ms) with #{payloadLength} of payload")
       intervalSender
         method: method

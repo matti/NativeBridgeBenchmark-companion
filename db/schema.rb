@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140602110153) do
+ActiveRecord::Schema.define(version: 20140830151557) do
 
   create_table "results", force: true do |t|
     t.integer  "test_id"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20140602110153) do
     t.float    "native_to_webview_delta"
     t.float    "cpu"
     t.float    "mem"
+    t.integer  "render_paused"
   end
 
   add_index "results", ["test_id"], name: "index_results_on_test_id"
