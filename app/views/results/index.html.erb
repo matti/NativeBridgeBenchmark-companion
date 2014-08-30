@@ -11,12 +11,16 @@
   <legend>WebView to Native</legend>
   <label>Method</label>
   <select id="methodElem">
+    <option value="html.iframe.same">html.iframe.same</option>
+
+    <option value="html.iframe">html.iframe</option>
+    <option value="cookie">cookie (4kb max)</option>
 <option value="http.websockets">http.websockets</option>
 
 <option value="jscore.sync">jscore.sync</option>
 
 
-<option value="html.iframe">html.iframe</option>
+
 
 
     <option value="location.href">location.href</option>
@@ -34,7 +38,7 @@
     <option value="xhr.async">xhr.async</option>
     <option value="xhr.sync">xhr.sync</option>
 
-    <option value="cookie">cookie</option>
+
 
 
 
@@ -92,6 +96,7 @@
 -->
 
   <select id="payloadLengthElem">
+    <option value="3">3</option>
 <option value="1000">1000</option>
 
 <option value="64">31</option>
@@ -124,19 +129,7 @@
 </fieldset>
 
 
-
-<!--
-<fieldset>
-<label>Pong back?</label>
-<select id="pongElem">
-  <option value="no">NO!</option>
-  <option value="yes">YES!</option>
-</select><br/>
-
-<label>Pong payload length:</label>
-<input id="pongPayloadLengthElem" type="text" value="100" size="8"></input><br/>
-</fieldset>
--->
+<iframe id="sender"></iframe>
 
 
 <h1>Listing results</h1>

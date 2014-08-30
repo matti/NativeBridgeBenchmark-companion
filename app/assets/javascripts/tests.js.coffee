@@ -84,6 +84,10 @@ window.sendWithHtmlIframe = (opts={}) ->
   iframeElem.src = generateRequestURL(opts)
   document.body.appendChild(iframeElem)
 
+window.sendWithHtmlIframeSame = (opts={}) ->
+  iframeElem = document.querySelector("iframe#sender")
+  iframeElem.src = generateRequestURL(opts)
+
 window.sendWithJSCoreSync = (opts={}) ->
   requestUrl = generateRequestURL(opts)
   window.viewController.nativeBridge(requestUrl)
@@ -179,6 +183,11 @@ window.intervalSender = (opts={}) ->
         currentFps: currentFps
     else if opts.method == "html.iframe"
       sendWithHtmlIframe
+        payload: opts.payload
+        method: opts.method
+        currentFps: currentFps
+    else if opts.method == "html.iframe.same"
+      sendWithHtmlIframeSame
         payload: opts.payload
         method: opts.method
         currentFps: currentFps
