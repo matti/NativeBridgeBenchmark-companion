@@ -175,91 +175,43 @@ window.intervalSender = (opts={}) ->
       sendWithLocationHref nativeOptions
 
     else if opts.method == "location.hash"
-      sendWithLocationHash
-        payload: opts.payload
-        method: opts.method
-        currentFps: currentFps
+      sendWithLocationHash nativeOptions
     else if opts.method == "a.click"
-      sendWithAClick
-        payload: opts.payload
-        method: opts.method
-        currentFps: currentFps
+      sendWithAClick nativeOptions
     else if opts.method == "html.iframe"
-      sendWithHtmlIframe
-        payload: opts.payload
-        method: opts.method
-        currentFps: currentFps
+      sendWithHtmlIframe nativeOptions
     else if opts.method == "html.iframe.same"
-      sendWithHtmlIframeSame
-        payload: opts.payload
-        method: opts.method
-        currentFps: currentFps
+      sendWithHtmlIframeSame nativeOptions
     else if opts.method == "xhr.sync"
-      sendWithXHR
-        payload: opts.payload
-        method: opts.method
-        currentFps: currentFps
-        async: false
+      nativeOptions.async = false
+      sendWithXHR nativeOptions
     else if opts.method == "xhr.async"
-      sendWithXHR
-        payload: opts.payload
-        method: opts.method
-        currentFps: currentFps
-        async: true
+      nativeOptions.async = true
+      sendWithXHR nativeOptions
     else if opts.method == "jscore.sync"
-      sendWithJSCoreSync
-        payload: opts.payload
-        method: opts.method
-        currentFps: currentFps
+      sendWithJSCoreSync nativeOptions
     else if opts.method == "http.websockets"
-      sendWithWebSockets
-        payload: opts.payload
-        method: opts.method
-        currentFps: currentFps
+      sendWithWebSockets nativeOptions
     else if opts.method == "cookie"
-      sendWithCookie
-        payload: opts.payload
-        method: opts.method
-        currentFps: currentFps
+      sendWithCookie nativeOptions
     else if opts.method == "html.object"
-      sendWithHtmlObject
-        payload: opts.payload
-        method: opts.method
-        currentFps: currentFps
+      sendWithHtmlObject nativeOptions
     else if opts.method == "html.embed"
-      sendWithHtmlEmbed
-        payload: opts.payload
-        method: opts.method
-        currentFps: currentFps
+      sendWithHtmlEmbed nativeOptions
     else if opts.method == "html.link"
-      sendWithHtmlLink
-        payload: opts.payload
-        method: opts.method
-        currentFps: currentFps
+      sendWithHtmlLink nativeOptions
     else if opts.method == "html.img"
-      sendWithHtmlImg
-        payload: opts.payload
-        method: opts.method
-        currentFps: currentFps
+      sendWithHtmlImg nativeOptions
     else if opts.method == "html.svgImage"
-      sendWithHtmlSvgImage
-        payload: opts.payload
-        method: opts.method
-        currentFps: currentFps
+      sendWithHtmlSvgImage nativeOptions
     else if opts.method == "html.script"
-      sendWithHtmlScript
-        payload: opts.payload
-        method: opts.method
-        currentFps: currentFps
+      sendWithHtmlScript nativeOptions
     else if opts.method == "localStorage"
-      sendWithLocalStorage
-        payload: opts.payload
-        method: opts.method
-        currentFps: currentFps
-        currentMessageIndex: currentMessageIndex
+      nativeOptions.currentMessageIndex = currentMessageIndex
+      sendWithLocalStorage nativeOptions
 
     window.renderloopHighest = 0
-    
+
     if messagesLeft > 0
       betterOpts = opts
       betterOpts.messagesLeft = messagesLeft
