@@ -123,17 +123,22 @@
 # methods = [
 #   "html.iframe",
 #   "html.iframe.same",
+#   "html.iframe.replace",
 #   "html.embed",
 #   "html.embed.same",
 #   "html.embed.replace",
 #   "html.script",
 #   "html.script.same",
+#   "html.script.replace",
 #   "html.svgImage",
 #   "html.svgImage.same",
+#   "html.svgImage.replace",
 #   "html.img",
 #   "html.img.same",
+#   "html.img.replace",
 #   "html.link",
 #   "html.link.same",
+#   "html.link.replace",
 #   "html.object",
 #   "html.object.same",
 #   "html.object.replace"
@@ -151,7 +156,7 @@
 #   512
 # ]
 
-# TODO: fails here, same & replace throw error
+# TODO: fails here, same & replace throw error because no body is returned
 # methods = [
 #   "html.script",
 #   "html.script.same",
@@ -169,6 +174,28 @@
 # payloads = [
 #   512
 # ]
+
+
+methods = [
+  "html.link",
+  "html.link.same",
+  "html.link.replace",
+  "html.object",
+  "html.object.same",
+  "html.object.replace"
+]
+
+message_amounts = [
+  100
+]
+
+intervals = [
+  250
+]
+
+payloads = [
+  512
+]
 
 
 methods.each do |method|

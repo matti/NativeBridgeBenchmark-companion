@@ -89,6 +89,15 @@ window.sendWithHtmlIframeSame = (opts={}) ->
   iframeElem = document.querySelector("iframe.nativebridge")
   iframeElem.src = generateRequestURL(opts)
 
+window.sendWithHtmlIframeReplace = (opts={}) ->
+  iframeElem = document.querySelector("iframe.nativebridge")
+
+  clonedElem = iframeElem.cloneNode()
+  iframeElem.remove()
+
+  clonedElem.src = generateRequestURL(opts)
+  document.body.appendChild(clonedElem)
+
 window.sendWithJSCoreSync = (opts={}) ->
   requestUrl = generateRequestURL(opts)
   window.viewController.nativeBridge(requestUrl)
@@ -149,6 +158,16 @@ window.sendWithHtmlLinkSame = (opts={}) ->
   linkElem = document.querySelector("link.nativebridge")
   linkElem.href = "http://#{generateRequestURL(opts)}"
 
+# must use http
+window.sendWithHtmlLinkReplace = (opts={}) ->
+  linkElem = document.querySelector("link.nativebridge")
+  clonedElem = linkElem.cloneNode()
+
+  linkElem.remove()
+
+  clonedElem.href = "http://#{generateRequestURL(opts)}"
+  document.body.appendChild(clonedElem)
+
 window.sendWithHtmlImg = (opts={}) ->
   imgElem = document.createElement("img")
   imgElem.src = "http://#{generateRequestURL(opts)}"
@@ -158,6 +177,15 @@ window.sendWithHtmlImg = (opts={}) ->
 window.sendWithHtmlImgSame = (opts={}) ->
   imgElem = document.querySelector("img.nativebridge")
   imgElem.src = "http://#{generateRequestURL(opts)}"
+
+window.sendWithHtmlImgReplace = (opts={}) ->
+  imgElem = document.querySelector("img.nativebridge")
+  clonedElem = imgElem.cloneNode()
+
+  imgElem.remove()
+  clonedElem.src = "http://#{generateRequestURL(opts)}"
+
+  document.body.appendChild(clonedElem)
 
 window.sendWithHtmlSvgImage = (opts={}) ->
   svgElem = document.createElementNS 'http://www.w3.org/2000/svg', 'svg'
@@ -176,6 +204,15 @@ window.sendWithHtmlSvgImageSame = (opts={}) ->
   svgImageElem = document.querySelector("svg image.nativebridge")
   svgImageElem.setAttributeNS 'http://www.w3.org/1999/xlink','href', "http://#{generateRequestURL(opts)}"
 
+window.sendWithHtmlSvgImageReplace = (opts={}) ->
+  svgImageElem = document.querySelector("svg image.nativebridge")
+  svgElem = svgImageElem.parentElement
+
+  clonedElem = svgImageElem.cloneNode()
+  svgImageElem.remove()
+
+  clonedElem.setAttributeNS 'http://www.w3.org/1999/xlink','href', "http://#{generateRequestURL(opts)}"
+  svgElem.appendChild(clonedElem)
 
 #must use http
 window.sendWithHtmlScript = (opts={}) ->
@@ -236,6 +273,8 @@ window.intervalSender = (opts={}) ->
       sendWithHtmlIframe nativeOptions
     else if opts.method == "html.iframe.same"
       sendWithHtmlIframeSame nativeOptions
+    else if opts.method == "html.iframe.replace"
+      sendWithHtmlIframeReplace nativeOptions
     else if opts.method == "xhr.sync"
       nativeOptions.async = false
       sendWithXHR nativeOptions
@@ -264,14 +303,20 @@ window.intervalSender = (opts={}) ->
       sendWithHtmlLink nativeOptions
     else if opts.method == "html.link.same"
       sendWithHtmlLinkSame nativeOptions
+    else if opts.method == "html.link.replace"
+      sendWithHtmlLinkReplace nativeOptions
     else if opts.method == "html.img"
       sendWithHtmlImg nativeOptions
     else if opts.method == "html.img.same"
       sendWithHtmlImgSame nativeOptions
+    else if opts.method == "html.img.replace"
+      sendWithHtmlImgReplace nativeOptions
     else if opts.method == "html.svgImage"
       sendWithHtmlSvgImage nativeOptions
     else if opts.method == "html.svgImage.same"
       sendWithHtmlSvgImageSame nativeOptions
+    else if opts.method == "html.svgImage.replace"
+      sendWithHtmlSvgImageReplace nativeOptions
     else if opts.method == "html.script"
       sendWithHtmlScript nativeOptions
     else if opts.method == "html.script.same"
