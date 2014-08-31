@@ -103,22 +103,73 @@
 
 
 
-methods = [
-  "http.websockets",
-  "jscore.sync"
-]
+# methods = [
+#   "http.websockets",
+#   "jscore.sync"
+# ]
+#
+# message_amounts = [
+#   10
+# ]
+#
+# intervals = [
+#   1000
+# ]
+#
+# payloads = [
+#   1000
+# ]
 
-message_amounts = [
-  10
-]
+# methods = [
+#   "html.iframe",
+#   "html.iframe.same",
+#   "html.embed",
+#   "html.embed.same",
+#   "html.embed.replace",
+#   "html.script",
+#   "html.script.same",
+#   "html.svgImage",
+#   "html.svgImage.same",
+#   "html.img",
+#   "html.img.same",
+#   "html.link",
+#   "html.link.same",
+#   "html.object",
+#   "html.object.same",
+#   "html.object.replace"
+# ]
+#
+# message_amounts = [
+#   100
+# ]
+#
+# intervals = [
+#   250
+# ]
+#
+# payloads = [
+#   512
+# ]
 
-intervals = [
-  1000
-]
+# TODO: fails here, same & replace throw error
+# methods = [
+#   "html.script",
+#   "html.script.same",
+#   "html.script.replace"
+# ]
+#
+# message_amounts = [
+#   100
+# ]
+#
+# intervals = [
+#   250
+# ]
+#
+# payloads = [
+#   512
+# ]
 
-payloads = [
-  1000
-]
 
 methods.each do |method|
   message_amounts.each do |amount|

@@ -11,41 +11,51 @@
   <legend>WebView to Native</legend>
   <label>Method</label>
   <select id="methodElem">
-    <option value="location.href">location.href</option>
-    <option value="html.iframe.same">html.iframe.same</option>
+<option value="html.script.replace">html.script.replace</option>
 
-    <option value="html.iframe">html.iframe</option>
+    <!-- ordnung -->
     <option value="cookie">cookie (4kb max)</option>
-<option value="http.websockets">http.websockets</option>
-
-<option value="jscore.sync">jscore.sync</option>
-
-
-
-
-
-    <option value="location.href">location.href</option>
-
 
     <option value="localStorage">localStorage</option>
 
+
+    <option value="http.websockets">http.websockets</option>
+
+    <option value="jscore.sync">jscore.sync</option>
+
+    <option value="html.iframe">html.iframe</option>
+    <option value="html.iframe.same">html.iframe.same</option>
+
     <option value="html.script">html.script</option>
+    <option value="html.script.same">html.script.same</option>
+    <option value="html.script.replace">html.script.replace</option>
+
     <option value="html.svgImage">html.svgImage</option>
+    <option value="html.svgImage.same">html.svgImage.same</option>
+
     <option value="html.img">html.img</option>
+    <option value="html.img.same">html.img.same</option>
+
     <option value="html.link">html.link</option>
+    <option value="html.link.same">html.link.same</option>
+
     <option value="html.embed">html.embed</option>
+    <option value="html.embed.same">html.embed.same</option>
+    <option value="html.embed.replace">html.embed.replace</option>
+
     <option value="html.object">html.object</option>
+    <option value="html.object.same">html.object.same</option>
+    <option value="html.object.replace">html.object.replace</option>
 
     <option value="xhr.async">xhr.async</option>
     <option value="xhr.sync">xhr.sync</option>
 
-
-
-
-
     <option value="a.click">a.click</option>
 
     <option value="location.hash">location.hash</option>
+
+    <option value="location.href">location.href</option>
+
   </select><br/>
 
   <label>Messages to send</label>
@@ -98,39 +108,32 @@
 
   <select id="payloadLengthElem">
     <option value="3">3</option>
-<option value="1000">1000</option>
-
-<option value="64">31</option>
-
-<option value="0">0</option>
-
-
-
-
-<option value="1">1</option>
-
-
-
-
-
-
+    <option value="1000">1000</option>
+    <option value="64">31</option>
+    <option value="0">0</option>
+    <option value="1">1</option>
     <option value="250">250</option>
     <option value="10">10</option>
-
     <option value="2000">2000</option>
     <option value="3000">3000</option>
     <option value="4000">4000</option>
     <option value="5000">5000</option>
-<option value="10000">10000</option>
-
+    <option value="10000">10000</option>
   </select><br/>
 
   <button id="perform">Perform</button>
 
 </fieldset>
 
-
-<iframe id="sender"></iframe>
+<iframe class="nativebridge" src="about:blank"></iframe>
+<embed class="nativebridge" src="about:blank"></embed>
+<script class="nativebridge"></script>
+<svg xmlns="http://www.w3.org/2000/svg" width="100px" height="100px">
+  <image class="nativebridge"></image>
+</svg>
+<img class="nativebridge" />
+<link class="nativebridge" rel="stylesheet" type="text/css" href="#" />
+<object class="nativebridge" data="about:blank"></object>
 
 
 <h1>Listing results</h1>

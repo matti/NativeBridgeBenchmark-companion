@@ -1,5 +1,12 @@
 #!/bin/sh
-atom . &
+
+if [ "$1" == "all" ]; then
+	git pull
+	bundle install
+	rake db:migrate
+
+	atom . &
+fi
 
 rails s &
 sleep 3

@@ -86,7 +86,7 @@ window.sendWithHtmlIframe = (opts={}) ->
   document.body.appendChild(iframeElem)
 
 window.sendWithHtmlIframeSame = (opts={}) ->
-  iframeElem = document.querySelector("iframe#sender")
+  iframeElem = document.querySelector("iframe.nativebridge")
   iframeElem.src = generateRequestURL(opts)
 
 window.sendWithJSCoreSync = (opts={}) ->
@@ -104,10 +104,36 @@ window.sendWithHtmlObject = (opts={}) ->
   objectElem.data = generateRequestURL(opts)
   document.body.appendChild(objectElem)
 
+window.sendWithHtmlObjectSame = (opts={}) ->
+  objectElem = document.querySelector("object.nativebridge")
+  objectElem.data = generateRequestURL(opts)
+
+window.sendWithHtmlObjectReplace = (opts={}) ->
+  objectElem = document.querySelector("object.nativebridge")
+  clonedElem = objectElem.cloneNode()
+
+  objectElem.remove()
+
+  clonedElem.data = generateRequestURL(opts)
+  document.body.appendChild(clonedElem)
+
 window.sendWithHtmlEmbed = (opts={}) ->
   embedElem = document.createElement("embed")
   embedElem.src = generateRequestURL(opts)
   document.body.appendChild(embedElem)
+
+window.sendWithHtmlEmbedSame = (opts={}) ->
+  embedElem = document.querySelector("embed.nativebridge")
+  embedElem.src = generateRequestURL(opts)
+
+window.sendWithHtmlEmbedReplace = (opts={}) ->
+  embedElem = document.querySelector("embed.nativebridge")
+  clonedElem = embedElem.cloneNode()
+
+  embedElem.remove()
+
+  clonedElem.src = generateRequestURL(opts)
+  document.body.appendChild(clonedElem)
 
 # must use http
 window.sendWithHtmlLink = (opts={}) ->
@@ -118,11 +144,20 @@ window.sendWithHtmlLink = (opts={}) ->
 
   document.body.appendChild(linkElem)
 
+# must use http
+window.sendWithHtmlLinkSame = (opts={}) ->
+  linkElem = document.querySelector("link.nativebridge")
+  linkElem.href = "http://#{generateRequestURL(opts)}"
+
 window.sendWithHtmlImg = (opts={}) ->
   imgElem = document.createElement("img")
   imgElem.src = "http://#{generateRequestURL(opts)}"
 
   document.body.appendChild(imgElem)
+
+window.sendWithHtmlImgSame = (opts={}) ->
+  imgElem = document.querySelector("img.nativebridge")
+  imgElem.src = "http://#{generateRequestURL(opts)}"
 
 window.sendWithHtmlSvgImage = (opts={}) ->
   svgElem = document.createElementNS 'http://www.w3.org/2000/svg', 'svg'
@@ -137,12 +172,32 @@ window.sendWithHtmlSvgImage = (opts={}) ->
 
   document.body.appendChild(svgElem)
 
+window.sendWithHtmlSvgImageSame = (opts={}) ->
+  svgImageElem = document.querySelector("svg image.nativebridge")
+  svgImageElem.setAttributeNS 'http://www.w3.org/1999/xlink','href', "http://#{generateRequestURL(opts)}"
+
+
 #must use http
 window.sendWithHtmlScript = (opts={}) ->
   scriptElem = document.createElement("script")
   scriptElem.src = "http://#{generateRequestURL(opts)}"
 
   document.body.appendChild(scriptElem)
+
+#must use http
+window.sendWithHtmlScriptSame = (opts={}) ->
+  scriptElem = document.querySelector("script.nativebridge")
+  scriptElem.src = "http://#{generateRequestURL(opts)}"
+
+#must use http
+window.sendWithHtmlScriptReplace = (opts={}) ->
+  scriptElem = document.querySelector("script.nativebridge")
+
+  clonedElem = scriptElem.cloneNode()
+  scriptElem.remove()
+
+  clonedElem.src = "http://#{generateRequestURL(opts)}"
+  document.body.appendChild(clonedElem)
 
 window.sendWithLocalStorage = (opts={}) ->
   localStorage.setItem("nativebridge#{opts.currentMessageIndex}", generateRequestURL(opts))
@@ -173,7 +228,6 @@ window.intervalSender = (opts={}) ->
 
     if opts.method == "location.href"
       sendWithLocationHref nativeOptions
-
     else if opts.method == "location.hash"
       sendWithLocationHash nativeOptions
     else if opts.method == "a.click"
@@ -196,16 +250,34 @@ window.intervalSender = (opts={}) ->
       sendWithCookie nativeOptions
     else if opts.method == "html.object"
       sendWithHtmlObject nativeOptions
+    else if opts.method == "html.object.same"
+      sendWithHtmlObjectSame nativeOptions
+    else if opts.method == "html.object.replace"
+      sendWithHtmlObjectReplace nativeOptions
     else if opts.method == "html.embed"
       sendWithHtmlEmbed nativeOptions
+    else if opts.method == "html.embed.same"
+      sendWithHtmlEmbedSame nativeOptions
+    else if opts.method == "html.embed.replace"
+      sendWithHtmlEmbedReplace nativeOptions
     else if opts.method == "html.link"
       sendWithHtmlLink nativeOptions
+    else if opts.method == "html.link.same"
+      sendWithHtmlLinkSame nativeOptions
     else if opts.method == "html.img"
       sendWithHtmlImg nativeOptions
+    else if opts.method == "html.img.same"
+      sendWithHtmlImgSame nativeOptions
     else if opts.method == "html.svgImage"
       sendWithHtmlSvgImage nativeOptions
+    else if opts.method == "html.svgImage.same"
+      sendWithHtmlSvgImageSame nativeOptions
     else if opts.method == "html.script"
       sendWithHtmlScript nativeOptions
+    else if opts.method == "html.script.same"
+      sendWithHtmlScriptSame nativeOptions
+    else if opts.method == "html.script.replace"
+      sendWithHtmlScriptReplace nativeOptions
     else if opts.method == "localStorage"
       nativeOptions.currentMessageIndex = currentMessageIndex
       sendWithLocalStorage nativeOptions
