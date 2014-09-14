@@ -408,34 +408,3 @@ document.querySelector("button#perform").onclick = ->
 
 if getParameterByName("method")
   document.querySelector("button#perform").click()
-
-###
-window.pong = (fromNativeJSON) ->
-  fromNative = JSON.parse(fromNativeJSON)
-  now = new Date
-
-  currentFps = parseInt(stats.domElement.firstChild.textContent)
-
-  if window.COULD_NOT_ANIMATE_EVEN_ONCE
-    currentFps = 0
-  else
-    window.COULD_NOT_ANIMATE_EVEN_ONCE = true
-
-  $.ajax
-    type: 'POST'
-    data:
-      result:
-        webview_started_at: fromNative.webview_started_at
-        webview_received_at: now.toJSON()
-        native_received_at: fromNative.native_received_at
-        native_started_at: fromNative.native_started_at
-        webview_payload_length: fromNative.webview_payload_length
-        native_payload_length: fromNative.pongPayload.length
-        from: "webview"
-        fps: currentFps
-    success: (data) ->
-      console.log "put suges"
-
-  if window.loadURLSending
-    performLocationHref()
-###
