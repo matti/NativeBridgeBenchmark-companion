@@ -9,7 +9,7 @@ db.transaction (tx) ->
   console.log "table nativeBridge created or exists"
 
   if navigator.userAgent.match(/(iPad|iPhone|iPod)/g)
-    console.log "signalling native"
-    window.location.href="#bootstrapcomplete"
+    console.log "signaling native"
+    window.location="#nativebridgebootstrapcomplete"
   else
     console.log "not signaling native (we're not in iOS)"
