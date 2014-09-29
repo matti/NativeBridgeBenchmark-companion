@@ -176,17 +176,49 @@
 # ]
 
 
+# methods = [
+#   "html.link",
+#   "html.link.same",
+#   "html.link.replace",
+#   "html.object",
+#   "html.object.same",
+#   "html.object.replace"
+# ]
+#
+# message_amounts = [
+#   100
+# ]
+#
+# intervals = [
+#   250
+# ]
+#
+# payloads = [
+#   512
+# ]
+
+
 methods = [
+  #"cookie",
+  "localStorage",
+  "http.websockets",
+  "jscore.sync",
+  "html.iframe",
+  "html.script",
+  "html.svgImage",
+  "html.img",
   "html.link",
-  "html.link.same",
-  "html.link.replace",
+  "html.embed",
   "html.object",
-  "html.object.same",
-  "html.object.replace"
+  "xhr.async",
+  "xhr.sync",
+  "a.click",
+  "location.hash",
+  "location.href"
 ]
 
 message_amounts = [
-  100
+  10
 ]
 
 intervals = [
@@ -194,9 +226,8 @@ intervals = [
 ]
 
 payloads = [
-  512
+  1
 ]
-
 
 methods.each do |method|
   message_amounts.each do |amount|
