@@ -198,11 +198,31 @@
 # ]
 
 
+# # uiwebview methods
+# methods = [
+#   "cookie",
+#   #"localStorage", doesn't work anymore in ios8
+#   "http.websockets",
+#   "jscore.sync",
+#   "html.iframe",
+#   "html.script",
+#   "html.svgImage",
+#   "html.img",
+#   "html.link",
+#   "html.embed",
+#   "html.object",
+#   "xhr.async",
+#   "xhr.sync",
+#   "a.click",
+#   "location.hash",
+#   "location.href"
+# ]
+
+# wkwebview methods
 methods = [
-  #"cookie",
-  "localStorage",
+  #"cookie", doens't fire
+  #"localStorage", doesn't work anymore in ios8
   "http.websockets",
-  "jscore.sync",
   "html.iframe",
   "html.script",
   "html.svgImage",
@@ -210,12 +230,14 @@ methods = [
   "html.link",
   "html.embed",
   "html.object",
-  "xhr.async",
-  "xhr.sync",
   "a.click",
   "location.hash",
-  "location.href"
+  "location.href",
+  "xhr.async",
+  "xhr.sync",
+  "jscore.sync",
 ]
+
 
 message_amounts = [
   10
