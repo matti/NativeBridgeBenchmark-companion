@@ -224,17 +224,17 @@ methods = [
   #"localStorage", doesn't work anymore in ios8
   "http.websockets",
   "html.iframe",
-  "html.script",
-  "html.svgImage",
-  "html.img",
-  "html.link",
+  #"html.script", not a navigational action
+  #"html.svgImage",
+  #"html.img",
+  #"html.link",
   "html.embed",
   "html.object",
   "a.click",
   "location.hash",
   "location.href",
-  "xhr.async",
-  "xhr.sync",
+  #"xhr.async", not navigational action
+  #"xhr.sync",
   "jscore.sync",
 ]
 
