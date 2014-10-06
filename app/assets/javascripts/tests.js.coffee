@@ -102,6 +102,10 @@ window.sendWithJSCoreSync = (opts={}) ->
   requestUrl = generateRequestURL(opts)
   window.viewController.nativeBridge(requestUrl)
 
+window.sendWithWebkitUsercontent = (opts={}) ->
+  requestUrl = generateRequestURL(opts)
+  window.webkit.messageHandlers.nativeBridge.postMessage(requestUrl)
+
 window.sendWithWebSockets = (opts={}) ->
   window.WebSocketTest2(generateRequestURL(opts))
 
@@ -283,6 +287,8 @@ window.intervalSender = (opts={}) ->
       sendWithXHR nativeOptions
     else if opts.method == "jscore.sync"
       sendWithJSCoreSync nativeOptions
+    else if opts.method == "webkit.usercontent"
+      sendWithWebkitUsercontent nativeOptions
     else if opts.method == "http.websockets"
       sendWithWebSockets nativeOptions
     else if opts.method == "cookie"
