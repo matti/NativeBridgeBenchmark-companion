@@ -198,9 +198,9 @@
 # ]
 
 
-# # uiwebview methods
+# uiwebview methods
 # methods = [
-#   "cookie",
+#   #"cookie", doesn't work anymore mihail agrees.
 #   #"localStorage", doesn't work anymore in ios8
 #   "http.websockets",
 #   "jscore.sync",
@@ -218,7 +218,7 @@
 #   "location.href"
 # ]
 
-# wkwebview methods
+# # wkwebview methods
 methods = [
   #"cookie", doens't fire
   #"localStorage", doesn't work anymore in ios8
@@ -235,12 +235,12 @@ methods = [
   "location.href",
   #"xhr.async", not navigational action
   #"xhr.sync",
-  "jscore.sync",
+  "webkit.usercontent"
 ]
 
 
 message_amounts = [
-  10
+  1
 ]
 
 intervals = [
