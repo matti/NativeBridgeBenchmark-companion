@@ -1,33 +1,44 @@
+#!/usr/bin/env ruby
 
 require "./config/environment"
 require "csv"
 
-system("rm -rf export/*")
+fields = ["id", "method_name", "fps", "mem", "cpu", "webview_to_native_delta", "render_paused"]
 
-Test.all.each do |test|
+# test = Test.first
+#
+# test_name, others = test.name.split("-")
+# header_fields = fields.map { |f| "#{test_name} #{f}" }
 
-  fields = ["id", "method_name", "fps", "mem", "cpu", "webview_to_native_delta"]
+header_fields = ["configuration"] + (fields)
 
-  test_name, others = test.name.split("-")
-  header_fields = fields.map { |f| "#{test_name} #{f}" }
+csv_string = CSV.generate(col_sep: ",") do |csv|
+  csv << header_fields
 
 
-  csv_string = CSV.generate(col_sep: ",") do |csv|
-
-    csv << header_fields
+  Test.all.each do |test|
 
     puts "test: #{test}"
     puts "results: #{test.results.size}"
 
     test.results.each do |result|
       result_row = []
+
+      test_method_name, test_amount, test_interval, test_payload, others = test.name.split("-")
+      test_configuration = "#{test_amount}-#{test_interval}-#{test_payload}"
+
+      result_row << test_configuration
+
       fields.each do |field|
         result_row << result.send(field.to_sym)
       end
 
+
       csv << result_row
     end
+
   end
 
-  File.write("export/#{test_name}.csv", csv_string)
 end
+
+File.write("export/all.csv", csv_string)

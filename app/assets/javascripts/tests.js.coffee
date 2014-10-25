@@ -346,12 +346,12 @@ window.intervalSender = (opts={}) ->
       if getParameterByName("method")
         nextTestId = parseInt(getParameterByName("next_test_id"))
 
-        window.showIndicator "waiting 5s..", 750
+        window.showIndicator "waiting 2s..", 750
 
         # TODO: might prevent weirdbug (101 vs 99)
         window.setTimeout =>
           window.location = "/tests/#{nextTestId}/perform"
-        , 5000
+        , 2000
 
       #   window.location.reload()
       # , 1000

@@ -198,49 +198,49 @@
 # ]
 
 
-# uiwebview methods
-# methods = [
-#   #"cookie", doesn't work anymore mihail agrees.
-#   #"localStorage", doesn't work anymore in ios8
-#   "http.websockets",
-#   "jscore.sync",
-#   "html.iframe",
-#   "html.script",
-#   "html.svgImage",
-#   "html.img",
-#   "html.link",
-#   "html.embed",
-#   "html.object",
-#   "xhr.async",
-#   "xhr.sync",
-#   "a.click",
-#   "location.hash",
-#   "location.href"
-# ]
-
-# # wkwebview methods
+##uiwebview methods
 methods = [
-  #"cookie", doens't fire
+  #"cookie", doesn't work anymore mihail agrees.
   #"localStorage", doesn't work anymore in ios8
   "http.websockets",
+  "jscore.sync",
   "html.iframe",
-  #"html.script", not a navigational action
-  #"html.svgImage",
-  #"html.img",
-  #"html.link",
+  "html.script",
+  "html.svgImage",
+  "html.img",
+  "html.link",
   "html.embed",
   "html.object",
+  "xhr.async",
+  "xhr.sync",
   "a.click",
   "location.hash",
-  "location.href",
-  #"xhr.async", not navigational action
-  #"xhr.sync",
-  "webkit.usercontent"
+  "location.href"
 ]
+
+# ## wkwebview methods
+# methods = [
+#   #"cookie", doens't fire
+#   #"localStorage", doesn't work anymore in ios8
+#   "http.websockets",
+#   "html.iframe",
+#   #"html.script", not a navigational action
+#   #"html.svgImage",
+#   #"html.img",
+#   #"html.link",
+#   "html.embed",
+#   "html.object",
+#   "a.click",
+#   "location.hash",
+#   "location.href",
+#   #"xhr.async", not navigational action
+#   #"xhr.sync",
+#   "webkit.usercontent"
+# ]
 
 
 message_amounts = [
-  1
+  15
 ]
 
 intervals = [
@@ -248,7 +248,9 @@ intervals = [
 ]
 
 payloads = [
-  1
+  1,
+  100,
+  1024
 ]
 
 methods.each do |method|
