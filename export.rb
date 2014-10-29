@@ -21,7 +21,16 @@ csv_string = CSV.generate(col_sep: ",") do |csv|
     puts "test: #{test}"
     puts "results: #{test.results.size}"
 
-    test.results.each do |result|
+    offset = (test.results.size / 10)
+    limit = test.results.size - (2*offset)
+
+    puts "offset: #{offset}"
+    puts "limit: #{limit}"
+
+    export_results = test.results.reorder("created_at asc").limit(limit).offset(offset)
+    puts "export results: #{export_results.size}"
+
+    export_results.each do |result|
       result_row = []
 
       test_method_name, test_amount, test_interval, test_payload, others = test.name.split("-")

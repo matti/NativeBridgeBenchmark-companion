@@ -238,19 +238,22 @@ methods = [
 #   "webkit.usercontent"
 # ]
 
+methods = [
+  "http.websockets",
+  "jscore.sync"
+]
+
 
 message_amounts = [
-  15
+  100
 ]
 
 intervals = [
-  250
+  200
 ]
 
 payloads = [
-  1,
-  100,
-  1024
+  256
 ]
 
 methods.each do |method|
