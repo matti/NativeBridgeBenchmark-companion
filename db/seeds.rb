@@ -239,8 +239,10 @@ methods = [
 # ]
 
 methods = [
+  "jscore.sync",
+  "location.href",
   "http.websockets",
-  "jscore.sync"
+  "a.click"
 ]
 
 
@@ -249,11 +251,11 @@ message_amounts = [
 ]
 
 intervals = [
-  200
+  500
 ]
 
 payloads = [
-  256
+  1024
 ]
 
 methods.each do |method|

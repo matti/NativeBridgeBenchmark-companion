@@ -107,7 +107,7 @@ window.sendWithWebkitUsercontent = (opts={}) ->
   window.webkit.messageHandlers.nativeBridge.postMessage(requestUrl)
 
 window.sendWithWebSockets = (opts={}) ->
-  window.WebSocketTest2(generateRequestURL(opts))
+  ws.send(generateRequestURL(opts))
 
 window.sendWithCookie = (opts={}) ->
   document.cookie = "nativebridge=#{generateRequestURL(opts)}"
@@ -386,6 +386,15 @@ window.getParameterByName = (name) ->
     decodeURIComponent(results[1].replace(/\+/g, " "))
   else
     null
+
+
+# websocket connection
+ws = new WebSocket "ws://localhost:31337/service"
+ws.onopen = () ->
+  console.log "websocket is open"
+
+ws.onclose = () ->
+  alert "websocket is closed"
 
 
 document.querySelector("button#perform").onclick = ->
