@@ -8,10 +8,18 @@
 
 
 <fieldset>
-  <legend>WebView to Native</legend>
+  <legend>Configuration</legend>
+
+  <label>Direction</label>
+  <select id="directionElem">
+    <option value="webview">to webview</option>
+    <option value="native">to native</option>
+  </select>
+  <br/>
+
   <label>Method</label>
   <select id="methodElem">
-<option value="webkit.usercontent">webkit.usercontent</option>
+<option value="http.websockets">http.websockets</option>
 
 
     <!-- ordnung -->
@@ -69,7 +77,7 @@
 -->
 
   <select id="messagesElem">
-<option value="1">1</option>
+<option value="100">100</option>
 
 <option value="1">1</option>
 <option value="2">2</option>
@@ -87,7 +95,7 @@
 -->
 
   <select id="intervalLengthElem">
-<option value="1000">1000</option>
+<option value="25">25</option>
 
     <option value="100">100</option>
 
@@ -127,7 +135,7 @@
   </select><br/>
 
   <button id="perform">Perform</button>
-
+  <button id="flush">Flush</button>
 </fieldset>
 
 <iframe class="nativebridge" src="about:blank"></iframe>

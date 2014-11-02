@@ -243,24 +243,25 @@ window.sendWithHtmlScriptReplace = (opts={}) ->
 window.sendWithLocalStorage = (opts={}) ->
   localStorage.setItem("nativebridge#{opts.currentMessageIndex}", generateRequestURL(opts))
 
+window.currentFps = ->
+  fps = if window.COULD_NOT_ANIMATE_EVEN_ONCE
+    currentFps = 0
+  else
+    window.COULD_NOT_ANIMATE_EVEN_ONCE = true
+    parseInt(stats.domElement.firstChild.textContent)
+
+  return fps
+
+
 window.intervalSender = (opts={}) ->
 
   messagesLeft = opts.messagesLeft || opts.messages
   messagesLeft = messagesLeft - 1
 
-  # TODO: check that works also:
-
-  currentFps = parseInt(stats.domElement.firstChild.textContent)
-
-  if window.COULD_NOT_ANIMATE_EVEN_ONCE
-    currentFps = 0
-  else
-    window.COULD_NOT_ANIMATE_EVEN_ONCE = true
-
   nativeOptions =
     payload: opts.payload
     method: opts.method
-    currentFps: currentFps
+    currentFps: currentFps()
     currentRenderLoopPause: window.renderloopElem.textContent
 
   setTimeout =>
@@ -393,33 +394,84 @@ ws = new WebSocket "ws://localhost:31337/service"
 ws.onopen = () ->
   console.log "websocket is open"
 
+ws.onmessage = (messageEvent) ->
+  bridgeHead(messageEvent.data)
+
 ws.onclose = () ->
   alert "websocket is closed"
 
+window.bridgeHeadMessages = []
+bridgeHead = (messageJSON) ->
+  message = JSON.parse(messageJSON)
+
+  benchmarkMessage =
+    native_started_at: message.native_started_at
+    webview_received_at: (new Date).toJSON()
+    render_paused: window.renderloopElem.textContent
+    fps: currentFps()
+    method_name: message.method
+    from: "native"
+    mem: message.mem
+    cpu: message.cpu
+
+  bridgeHeadMessages.push benchmarkMessage
+
 
 document.querySelector("button#perform").onclick = ->
+  direction = document.querySelector("#directionElem").value
+
   method = getParameterByName('method') || document.querySelector("#methodElem").value
   interval = parseInt(getParameterByName('interval') || document.querySelector("#intervalLengthElem").value)
   messages = parseInt(getParameterByName('amount') || document.querySelector("#messagesElem").value)
 
   payloadLength = parseInt(getParameterByName('payload') || document.querySelector("#payloadLengthElem").value)
 
-  showIndicator("generating payload...")
-  window.setTimeout =>
-    payload = window.payloadGenerator(1024*payloadLength)
-
-    #eliminate touch event fuckup
+  if direction == "native"
+    showIndicator("generating payload...")
     window.setTimeout =>
-      window.renderloopHighest = 0
+      payload = window.payloadGenerator(1024*payloadLength)
 
-      showIndicator("started #{method} (every #{interval}ms) with #{payloadLength} of payload")
-      intervalSender
-        method: method
-        interval: interval
-        messages: messages
-        payload: payload
-    , 1000
-  , 500
+      #eliminate touch event fuckup
+      window.setTimeout =>
+        window.renderloopHighest = 0
+
+        showIndicator("started #{method} (every #{interval}ms) with #{payloadLength} of payload")
+        intervalSender
+          method: method
+          interval: interval
+          messages: messages
+          payload: payload
+      , 1000
+    , 500
+
+  else
+    object =
+      type: "request"
+      method: method
+      interval: interval
+      messages: messages
+      payloadLength: payloadLength
+
+    ws.send JSON.stringify(object)
+    showIndicator "requested messages from native"
+
 
 if getParameterByName("method")
   document.querySelector("button#perform").click()
+
+
+document.querySelector("button#flush").onclick = ->
+
+  popAndSend = ->
+    console.log "send"
+    message = window.bridgeHeadMessages.pop()
+    return unless message
+
+    xmlhttp = new XMLHttpRequest()
+    xmlhttp.open "POST", window.location.href, false
+    xmlhttp.setRequestHeader "Content-Type", "application/json;charset=UTF-8"
+    xmlhttp.send JSON.stringify(message)
+
+    popAndSend()
+
+  popAndSend()

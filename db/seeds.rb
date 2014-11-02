@@ -240,18 +240,16 @@ methods = [
 
 methods = [
   "jscore.sync",
-  "location.href",
   "http.websockets",
-  "a.click"
 ]
 
 
 message_amounts = [
-  100
+  1000
 ]
 
 intervals = [
-  500
+  50
 ]
 
 payloads = [
