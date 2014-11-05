@@ -401,7 +401,7 @@ ws.onclose = () ->
   alert "websocket is closed"
 
 window.bridgeHeadMessages = []
-bridgeHead = (messageJSON) ->
+window.bridgeHead = (messageJSON) ->
   message = JSON.parse(messageJSON)
 
   benchmarkMessage =
