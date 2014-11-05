@@ -400,6 +400,11 @@ ws.onmessage = (messageEvent) ->
 ws.onclose = () ->
   alert "websocket is closed"
 
+window.onhashchange = (e, b) ->
+  encodedJson = location.hash.substr(18) # #%23webviewbridge:
+  decodedJson = decodeURIComponent(encodedJson)
+  window.bridgeHead(decodedJson)
+
 window.bridgeHeadMessages = []
 window.bridgeHead = (messageJSON) ->
   message = JSON.parse(messageJSON)
