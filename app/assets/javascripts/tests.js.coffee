@@ -354,30 +354,38 @@ window.intervalSender = (opts={}) ->
           window.location = "/tests/#{nextTestId}/perform"
         , 2000
 
-      #   window.location.reload()
-      # , 1000
-
   , opts.interval
 
 
-window.renderLoopInterval = 10
-window.renderloopElem = document.querySelector("#renderloop");
 
-window.setInterval ->
+
+
+window.renderloopElem = document.querySelector "#renderloop"
+
+render = ->
+  window.stats.begin()
+
+  # ---
   now = Date.now()
 
-  delta = now - window.renderloopLast - window.renderLoopInterval
+  delta = now - window.renderloopLast
 
-  window.renderloopHighest = delta unless window.renderloopHighest
+#  window.renderloopHighest = delta unless window.renderloopHighest
 
-  if delta > window.renderloopHighest
+  if not window.renderloopHighest or delta > window.renderloopHighest
     window.renderloopHighest = delta
 
-  #window.renderloopElem.textContent = delta + " " + window.renderloopHighest
   window.renderloopElem.textContent = window.renderloopHighest
-
   window.renderloopLast = now
-, window.renderLoopInterval
+
+  # prevents setting FPS to 0
+  window.COULD_NOT_ANIMATE_EVEN_ONCE = false
+
+  window.stats.end()
+
+  window.requestAnimationFrame(render)
+
+render()
 
 window.getParameterByName = (name) ->
   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]")
