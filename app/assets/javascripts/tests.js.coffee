@@ -366,6 +366,8 @@ render = ->
   window.stats.begin()
 
   # ---
+  window.renderloopElem.textContent = window.renderloopHighest
+  
   now = Date.now()
 
   delta = now - window.renderloopLast
@@ -412,6 +414,10 @@ window.bridgeHeadMessages = []
 window.bridgeHead = (messageJSON) ->
   message = JSON.parse(messageJSON)
 
+  if message.type == "native_end"
+    showIndicator("last message received")
+    return
+
   benchmarkMessage =
     native_started_at: message.native_started_at
     webview_received_at: (new Date).toJSON()
@@ -421,7 +427,9 @@ window.bridgeHead = (messageJSON) ->
     from: "native"
     mem: message.mem
     cpu: message.cpu
+    payload: message.payload
 
+  window.renderloopHighest = 0
   bridgeHeadMessages.push benchmarkMessage
 
 
@@ -471,15 +479,20 @@ if getParameterByName("method")
 document.querySelector("button#flush").onclick = ->
 
   popAndSend = ->
-    console.log "send"
     message = window.bridgeHeadMessages.pop()
-    return unless message
+    unless message
+      showIndicator "Flushing: DONE"
+      return
 
-    xmlhttp = new XMLHttpRequest()
-    xmlhttp.open "POST", window.location.href, false
-    xmlhttp.setRequestHeader "Content-Type", "application/json;charset=UTF-8"
-    xmlhttp.send JSON.stringify(message)
+    showIndicator "Flushing: #{window.bridgeHeadMessages.length}"
 
-    popAndSend()
+    setTimeout =>
+      xmlhttp = new XMLHttpRequest()
+      xmlhttp.open "POST", window.location.href, false
+      xmlhttp.setRequestHeader "Content-Type", "application/json;charset=UTF-8"
+      xmlhttp.send JSON.stringify(message)
+
+      popAndSend()
+    , 10
 
   popAndSend()
