@@ -264,5 +264,5 @@ canvas.addEventListener('touchend', function(evt) {
 });
 
 document.addEventListener("DOMContentLoaded", function() {
-    animate(canvas, balls, time, mousePos);
+    //animate(canvas, balls, time, mousePos);
 })
