@@ -367,7 +367,7 @@ render = ->
 
   # ---
   window.renderloopElem.textContent = window.renderloopHighest
-  
+
   now = Date.now()
 
   delta = now - window.renderloopLast
@@ -491,13 +491,25 @@ document.querySelector("button#flush").onclick = ->
 
     showIndicator "Flushing: #{window.bridgeHeadMessages.length}"
 
+    benchmarkMessage =
+      from: "native"
+      method_name: message.method_name
+      native_payload_length: message.native_payload_length
+      cpu: message.cpu
+      mem: message.mem
+      fps: message.fps
+      render_paused: message.render_paused
+      native_started_at: message.native_started_at
+      webview_received_at: message.webview_received_at
+
     setTimeout =>
       xmlhttp = new XMLHttpRequest()
-      xmlhttp.open "POST", window.location.href, false
+      #NOTE: when using hash, location.href is not good
+      xmlhttp.open "POST", "#{window.location.origin}#{window.location.pathname}", false
       xmlhttp.setRequestHeader "Content-Type", "application/json;charset=UTF-8"
-      xmlhttp.send JSON.stringify(message)
+      xmlhttp.send JSON.stringify(benchmarkMessage)
 
       popAndSend()
-    , 10
+    , 5
 
   popAndSend()
