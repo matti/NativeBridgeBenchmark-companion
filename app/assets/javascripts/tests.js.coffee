@@ -343,21 +343,21 @@ window.intervalSender = (opts={}) ->
     else
       window.showIndicator "DONE", 750
 
-
-      if getParameterByName("method")
-        nextTestId = parseInt(getParameterByName("next_test_id"))
-
-        window.showIndicator "waiting 2s..", 750
-
-        # TODO: might prevent weirdbug (101 vs 99)
-        window.setTimeout =>
-          window.location = "/tests/#{nextTestId}/perform"
-        , 2000
+      moveOnToTheNextTestIfSet()
 
   , opts.interval
 
 
+moveOnToTheNextTestIfSet = =>
+  if getParameterByName("method")
+    nextTestId = parseInt(getParameterByName("next_test_id"))
 
+    window.showIndicator "waiting 2s..", 750
+
+    # TODO: might prevent weirdbug (101 vs 99)
+    window.setTimeout =>
+      window.location = "/tests/#{nextTestId}/perform"
+    , 2000
 
 
 window.renderloopElem = document.querySelector "#renderloop"
@@ -417,10 +417,15 @@ window.onhashchange = (e, b) ->
 
 window.bridgeHeadMessages = []
 window.bridgeHead = (messageJSON) ->
+  unless messageJSON[0] == "{"
+    console.log "something else than json was passed to bridgehead, can't debug everything. was: #{messageJSON}"
+    return
+
   message = JSON.parse(messageJSON)
 
   if message.type == "native_end"
     showIndicator("last message received")
+    moveOnToTheNextTestIfSet()
     return
 
   benchmarkMessage =
@@ -439,7 +444,7 @@ window.bridgeHead = (messageJSON) ->
 
 
 document.querySelector("button#perform").onclick = ->
-  direction = document.querySelector("#directionElem").value
+  direction = getParameterByName('direction') || document.querySelector("#directionElem").value
 
   method = getParameterByName('method') || document.querySelector("#methodElem").value
   interval = parseInt(getParameterByName('interval') || document.querySelector("#intervalLengthElem").value)
@@ -473,9 +478,12 @@ document.querySelector("button#perform").onclick = ->
       messages: messages
       payloadLength: payloadLength
 
-    ws.send JSON.stringify(object)
-    showIndicator "requested messages from native"
 
+    setTimeout ->
+      console.log "requested payload from native"
+      ws.send JSON.stringify(object)
+      showIndicator "requested messages from native"
+    , 500
 
 if getParameterByName("method")
   document.querySelector("button#perform").click()
@@ -483,11 +491,21 @@ if getParameterByName("method")
 
 document.querySelector("button#flush").onclick = ->
 
+  object =
+    type: "flush"
+
+  ws.send JSON.stringify(object)
+  showIndicator "requested flush from native"
+
+  noWebViewMessages = true
   popAndSend = ->
     message = window.bridgeHeadMessages.pop()
+
     unless message
-      showIndicator "Flushing: DONE"
+      showIndicator "Flushing: DONE" unless noWebViewMessages
       return
+    else
+      noWebViewMessages = false
 
     showIndicator "Flushing: #{window.bridgeHeadMessages.length}"
 

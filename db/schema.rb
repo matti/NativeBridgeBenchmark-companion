@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140830151557) do
+ActiveRecord::Schema.define(version: 20141218185331) do
 
   create_table "results", force: true do |t|
     t.integer  "test_id"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20140830151557) do
     t.float    "cpu"
     t.float    "mem"
     t.integer  "render_paused"
+    t.string   "direction"
   end
 
   add_index "results", ["test_id"], name: "index_results_on_test_id"

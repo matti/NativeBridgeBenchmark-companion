@@ -245,7 +245,7 @@ methods = [
 
 
 message_amounts = [
-  1000
+  10
 ]
 
 intervals = [
@@ -253,17 +253,19 @@ intervals = [
 ]
 
 payloads = [
-  1024
+  1
 ]
 
 #TODO: webview.eval
+
+direction = "native"
 
 methods.each do |method|
   message_amounts.each do |amount|
     intervals.each do |interval|
       payloads.each do |payload|
-        test_name = "#{method}-#{amount}-#{interval}-#{payload}"
-        Test.create!(:name => test_name)
+        test_name = "#{method}-#{amount}-#{interval}-#{payload}-#{direction}"
+        Test.create! name: test_name
         puts "#{test_name} created"
       end
     end

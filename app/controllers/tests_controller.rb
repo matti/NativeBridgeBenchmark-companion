@@ -19,9 +19,10 @@ class TestsController < ApplicationController
       render "all_done"
     else
 
-    method, amount, interval, payload = @test.name.split('-')
+    method, amount, interval, payload, direction = @test.name.split('-')
 
     redirect_to test_results_path(@test, {
+      direction: direction,
       method: method,
       amount: amount,
       interval: interval,
