@@ -348,16 +348,20 @@ window.intervalSender = (opts={}) ->
   , opts.interval
 
 
-moveOnToTheNextTestIfSet = =>
-  if getParameterByName("method")
-    nextTestId = parseInt(getParameterByName("next_test_id"))
+moveOnToTheNextTestIfSet = (okToMove=false)=>
 
-    window.showIndicator "waiting 2s..", 750
-
+  if okToMove
     # TODO: might prevent weirdbug (101 vs 99)
     window.setTimeout =>
+      nextTestId = parseInt(getParameterByName("next_test_id"))
       window.location = "/tests/#{nextTestId}/perform"
     , 2000
+
+    return
+
+  if getParameterByName("method")
+    document.querySelector("button#flush").click()
+
 
 
 window.renderloopElem = document.querySelector "#renderloop"
@@ -422,6 +426,11 @@ window.bridgeHead = (messageJSON) ->
     return
 
   message = JSON.parse(messageJSON)
+
+  if message.type == "flush_end"
+    showIndicator("flush completed")
+    moveOnToTheNextTestIfSet(true)
+    return
 
   if message.type == "native_end"
     showIndicator("last message received")
