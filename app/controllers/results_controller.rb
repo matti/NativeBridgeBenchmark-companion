@@ -11,7 +11,7 @@ class ResultsController < ApplicationController
 
     respond_to do |format|
       if @result.save
-        format.html { redirect_to edit_test_result_path(@test, @result), notice: 'Result was successfully created.' }
+        format.html { render text: 'k.' }
         format.json { render json: {}, status: :created }
       else
         format.html { render :new }
