@@ -2,6 +2,10 @@
     <li>samples: <%= @test.results.size %></li>
     <% if @test.results.any? %>
       <li>avg fps: <%= @test.results.average("fps")%></li>
+      <li>avg render_paused: <%= @test.results.average("render_paused") %></li>
+      <li>avg cpu: <%= @test.results.average("cpu") %></li>
+      <li>avg mem: <%= @test.results.average("mem") %></li>
+
       <li>avg webview2native <%= @test.results.average("webview_to_native_delta").round(4) %></li>
       <li>avg native2webview <%= @test.results.average("native_to_webview_delta").round(4) %></li>
     <% end %>
