@@ -87,9 +87,11 @@ elsif direction == "webview"
       "http.websockets"
     ]
   elsif webview == "wkwebview"
-    # TODO: wat?
+    #TODO: surely more?
     methods = [
-      "http.websockets"
+      "http.websockets",
+      "webview.eval",
+      "location.hash"
     ]
   end
 end
