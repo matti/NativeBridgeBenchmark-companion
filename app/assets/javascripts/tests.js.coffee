@@ -351,6 +351,10 @@ window.intervalSender = (opts={}) ->
 moveOnToTheNextTestIfSet = (okToMove=false)=>
 
   if okToMove
+    unless window.location.href.match("next_test_id")
+      console.log "no next_test_id set, not moving"
+      return
+
     # TODO: might prevent weirdbug (101 vs 99)
     window.setTimeout =>
       nextTestId = parseInt(getParameterByName("next_test_id"))
