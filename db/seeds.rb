@@ -39,7 +39,6 @@ raise "Unknown direction: #{direction}" unless ["native", "webview"].include? di
 
 if direction == "native"
   if webview == "uiwebview"
-    #uiwebview methods
     methods = [
       #"cookie", doesn't work anymore mihail agrees.
       #"localStorage", doesn't work anymore in ios8
@@ -76,6 +75,9 @@ if direction == "native"
       "location.href",
       #"xhr.async", not navigational action
       #"xhr.sync"
+      "webkit.alert",
+      "webkit.prompt",
+      "webkit.confirm"
     ]
   end
 elsif direction == "webview"

@@ -12,21 +12,16 @@
 
   <label>Direction</label>
   <select id="directionElem">
-    <option value="webview">to webview</option>
     <option value="native">to native</option>
+    <option value="webview">to webview</option>
   </select>
   <br/>
 
   <label>Method</label>
   <select id="methodElem">
-    <option value="jscore.sync">jscore.sync</option>
-
-    <option value="webview.eval">webview.eval</option>
-    <option value="jscore.sync">jscore.sync</option>
-    <option value="location.hash">location.hash</option>
-
-    <option value="http.websockets">http.websockets</option>
-
+    <option value="webkit.alert">webkit.alert</option>
+    <option value="webkit.prompt">webkit.prompt</option>
+    <option value="webkit.confirm">webkit.confirm</option>
 
     <!-- ordnung -->
     <option value="cookie">cookie (4kb max)</option>
@@ -75,6 +70,10 @@
     <option value="location.href">location.href</option>
 
     <option value="webview.eval">webview.eval</option>
+
+    <option value="webkit.alert">webkit.alert</option>
+    <option value="webkit.prompt">webkit.prompt</option>
+    <option value="webkit.confirm">webkit.confirm</option>
   </select><br/>
 
   <label>Messages to send</label>
@@ -83,6 +82,7 @@
 -->
 
   <select id="messagesElem">
+    <option value="1">1</option>
     <option value="20">20</option>
 
 <option value="1">1</option>

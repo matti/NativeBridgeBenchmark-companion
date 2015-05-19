@@ -243,6 +243,16 @@ window.sendWithHtmlScriptReplace = (opts={}) ->
 window.sendWithLocalStorage = (opts={}) ->
   localStorage.setItem("nativebridge#{opts.currentMessageIndex}", generateRequestURL(opts))
 
+window.sendWithWebkitAlert = (opts={}) ->
+  window.alert(generateRequestURL(opts))
+
+window.sendWithWebkitPrompt = (opts={}) ->
+  window.prompt(generateRequestURL(opts))
+
+window.sendWithWebkitConfirm = (opts={}) ->
+  window.confirm(generateRequestURL(opts))
+
+
 window.currentFps = ->
   fps = if window.COULD_NOT_ANIMATE_EVEN_ONCE
     currentFps = 0
@@ -333,6 +343,12 @@ window.intervalSender = (opts={}) ->
     else if opts.method == "localStorage"
       nativeOptions.currentMessageIndex = currentMessageIndex
       sendWithLocalStorage nativeOptions
+    else if opts.method == "webkit.alert"
+      sendWithWebkitAlert nativeOptions
+    else if opts.method == "webkit.prompt"
+      sendWithWebkitPrompt nativeOptions
+    else if opts.method == "webkit.confirm"
+      sendWithWebkitConfirm nativeOptions
 
     window.renderloopHighest = 0
 
