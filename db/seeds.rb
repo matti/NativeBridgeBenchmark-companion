@@ -55,6 +55,7 @@ if direction == "native"
       "xhr.sync",
       "a.click",
       "location.hash",
+      "location.replaceHash", #TODO: IMPLEMENT
       "location.href"
     ]
   elsif webview == "wkwebview"
@@ -71,19 +72,22 @@ if direction == "native"
       "html.embed",
       "html.object",
       "a.click",
+      "location.replaceHash", #TODO: implement
       "location.hash",
       "location.href",
       #"xhr.async", not navigational action
       #"xhr.sync"
       "webkit.alert",
       "webkit.prompt",
-      "webkit.confirm"
+      "webkit.confirm",
+      "webkit.title", #TODO: implement
     ]
   end
 elsif direction == "webview"
   if webview == "uiwebview"
     methods = [
       "location.hash",
+      "location.replaceHash", #TODO: implement
       "webview.eval",
       "jscore.sync",
       "http.websockets"
@@ -93,7 +97,8 @@ elsif direction == "webview"
     methods = [
       "http.websockets",
       "webview.eval",
-      "location.hash"
+      "location.hash",
+      "location.replaceHash" #TODO: implement
     ]
   end
 end
