@@ -69,6 +69,12 @@ window.sendWithLocationHref = (opts={}) ->
 window.sendWithLocationHash = (opts={}) ->
   window.location.hash=generateRequestURL(opts)
 
+window.sendWithLocationReplaceHash = (opts={}) ->
+  window.location.replace("#" + generateRequestURL(opts))
+
+window.sendWithLocationReplace = (opts={}) ->
+  window.location.replace(generateRequestURL(opts))
+
 # must use http
 window.sendWithXHR = (opts={}) ->
   xhr = new XMLHttpRequest()
@@ -282,6 +288,10 @@ window.intervalSender = (opts={}) ->
       sendWithLocationHref nativeOptions
     else if opts.method == "location.hash"
       sendWithLocationHash nativeOptions
+    else if opts.method == "location.replace"
+      sendWithLocationReplace nativeOptions
+    else if opts.method == "location.replaceHash"
+      sendWithLocationReplaceHash nativeOptions
     else if opts.method == "a.click"
       sendWithAClick nativeOptions
     else if opts.method == "html.iframe"
