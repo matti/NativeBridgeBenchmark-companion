@@ -82,7 +82,7 @@ if direction == "native"
       "webkit.alert",
       "webkit.prompt",
       "webkit.confirm",
-      "webkit.title", #TODO: implement
+      "webkit.title",
     ]
   end
 elsif direction == "webview"

@@ -258,6 +258,8 @@ window.sendWithWebkitPrompt = (opts={}) ->
 window.sendWithWebkitConfirm = (opts={}) ->
   window.confirm(generateRequestURL(opts))
 
+window.sendWithWebkitTitle = (opts={}) ->
+  document.title = generateRequestURL(opts)
 
 window.currentFps = ->
   fps = if window.COULD_NOT_ANIMATE_EVEN_ONCE
@@ -359,6 +361,8 @@ window.intervalSender = (opts={}) ->
       sendWithWebkitPrompt nativeOptions
     else if opts.method == "webkit.confirm"
       sendWithWebkitConfirm nativeOptions
+    else if opts.method == "webkit.title"
+      sendWithWebkitTitle nativeOptions
 
     window.renderloopHighest = 0
 
