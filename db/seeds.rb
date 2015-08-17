@@ -35,7 +35,7 @@ webview = ARGV[1]
 direction = ARGV[2]
 
 raise "Unknown webview: #{webview}" unless ["uiwebview", "wkwebview"].include? webview
-raise "Unknown direction: #{direction}" unless ["native", "webview"].include? direction
+raise "Unknown direction: #{direction}" unless ["native", "webview", "nativesync"].include? direction
 
 if direction == "native"
   if webview == "uiwebview"
@@ -57,7 +57,10 @@ if direction == "native"
       "location.hash",
       "location.replaceHash",
       "location.replace",
-      "location.href"
+      "location.href",
+      "prompt",
+      "alert",
+      "confirm"
     ]
   elsif webview == "wkwebview"
     methods = [
@@ -101,6 +104,33 @@ elsif direction == "webview"
       "location.hash"
     ]
   end
+
+elsif direction == "nativesync"
+  if webview == "uiwebview"
+    methods = [
+      "jscore.pongweb",
+      "xhr.sync",
+      "prompt.pongweb"
+    ]
+  elsif webview == "wkwebview"
+    methods = [
+      #"webkit.usercontent", no return value jscore is acually better
+      "prompt.pongweb"
+    ]
+  end
+# TODO: this is hard to do with this architecture + not very interesting
+# elsif direction == "webviewsync"
+#   if webview == "uiwebview"
+#     methods = [
+#       #"jscore.sync", #TODO
+#       "webview.evalpong" #TODO
+#     ]
+#   elsif webview == "wkwebview"
+#     methods = [
+#       "webview.eval" #TODO
+#     ]
+#   end
+
 end
 
 

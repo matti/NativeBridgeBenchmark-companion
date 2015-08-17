@@ -261,6 +261,30 @@ window.sendWithWebkitConfirm = (opts={}) ->
 window.sendWithWebkitTitle = (opts={}) ->
   document.title = generateRequestURL(opts)
 
+window.sendWithPrompt = (opts={}) ->
+  window.prompt(generateRequestURL(opts))
+
+window.sendWithAlert = (opts={}) ->
+  window.alert(generateRequestURL(opts))
+
+window.sendWithConfirm = (opts={}) ->
+  window.confirm(generateRequestURL(opts))
+
+window.sendWithPromptPongWeb = (opts={}) ->
+  messageJSON = window.prompt(generateRequestURL(opts))
+  window.bridgeHead(messageJSON)
+
+window.sendWithJSCorePongWeb = (opts={}) ->
+  messageJSON = window.viewController.nativeBridgePong(generateRequestURL(opts))
+  window.bridgeHead messageJSON
+
+window.sendWithXHRPongWeb = (opts={}) ->
+  xhr = new XMLHttpRequest()
+  xhr.open "get", "http://#{generateRequestURL(opts)}", false
+  xhr.send()
+  window.bridgeHead xhr.responseText
+
+
 window.currentFps = ->
   fps = if window.COULD_NOT_ANIMATE_EVEN_ONCE
     currentFps = 0
@@ -363,6 +387,18 @@ window.intervalSender = (opts={}) ->
       sendWithWebkitConfirm nativeOptions
     else if opts.method == "webkit.title"
       sendWithWebkitTitle nativeOptions
+    else if opts.method == "prompt"
+      sendWithPrompt nativeOptions
+    else if opts.method == "alert"
+      sendWithAlert nativeOptions
+    else if opts.method == "confirm"
+      sendWithConfirm nativeOptions
+    else if opts.method == "prompt.pongweb"
+      sendWithPromptPongWeb nativeOptions
+    else if opts.method == "jscore.pongweb"
+      sendWithJSCorePongWeb nativeOptions
+    else if opts.method == "xhr.pongweb"
+      sendWithXHRPongWeb nativeOptions
 
     window.renderloopHighest = 0
 
@@ -473,6 +509,7 @@ window.bridgeHead = (messageJSON) ->
 
   benchmarkMessage =
     native_started_at: message.native_started_at
+    webview_started_at: message.webview_started_at
     webview_received_at: (new Date).toJSON()
     render_paused: window.renderloopElem.textContent
     fps: currentFps()
@@ -562,6 +599,7 @@ document.querySelector("button#flush").onclick = ->
       render_paused: message.render_paused
       native_started_at: message.native_started_at
       webview_received_at: message.webview_received_at
+      webview_started_at: message.webview_started_at
 
     setTimeout =>
       xmlhttp = new XMLHttpRequest()
