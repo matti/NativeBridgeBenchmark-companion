@@ -284,6 +284,16 @@ window.sendWithXHRPongWeb = (opts={}) ->
   xhr.send()
   window.bridgeHead xhr.responseText
 
+window.sendWithXHRLocal = (opts={}) ->
+  xhr = new XMLHttpRequest()
+  xhr.open "get", "http://localhost:31337/#{generateRequestURL(opts)}", opts.async
+  xhr.send()
+
+sendWithXHRLocalPongWeb = (opts={}) ->
+  xhr = new XMLHttpRequest()
+  xhr.open "get", "http://localhost:31337/#{generateRequestURL(opts)}", opts.async
+  xhr.send()
+  window.bridgeHead xhr.responseText
 
 window.currentFps = ->
   fps = if window.COULD_NOT_ANIMATE_EVEN_ONCE
@@ -398,7 +408,17 @@ window.intervalSender = (opts={}) ->
     else if opts.method == "jscore.pongweb"
       sendWithJSCorePongWeb nativeOptions
     else if opts.method == "xhr.pongweb"
+      nativeOptions.async = false
       sendWithXHRPongWeb nativeOptions
+    else if opts.method == "xhrlocal.async"
+      nativeOptions.async = true
+      sendWithXHRLocal nativeOptions
+    else if opts.method == "xhrlocal.sync"
+      nativeOptions.async = false
+      sendWithXHRLocal nativeOptions
+    else if opts.method == "xhrlocal.pongweb"
+      nativeOptions.async = false
+      sendWithXHRLocalPongWeb nativeOptions
 
     window.renderloopHighest = 0
 

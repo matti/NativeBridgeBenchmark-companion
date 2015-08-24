@@ -60,7 +60,9 @@ if direction == "native"
       "location.href",
       "prompt",
       "alert",
-      "confirm"
+      "confirm",
+      "xhrlocal.async",
+      "xhrlocal.sync"
     ]
   elsif webview == "wkwebview"
     methods = [
@@ -86,6 +88,8 @@ if direction == "native"
       "webkit.prompt",
       "webkit.confirm",
       "webkit.title",
+      "xhrlocal.async",
+      "xhrlocal.sync"
     ]
   end
 elsif direction == "webview"
@@ -109,13 +113,15 @@ elsif direction == "nativesync"
   if webview == "uiwebview"
     methods = [
       "jscore.pongweb",
-      "xhr.sync",
+      "xhr.pongweb",
+      "xhrlocal.pongweb",
       "prompt.pongweb"
     ]
   elsif webview == "wkwebview"
     methods = [
       #"webkit.usercontent", no return value jscore is acually better
-      "prompt.pongweb"
+      "prompt.pongweb",
+      "xhrlocal.pongweb"
     ]
   end
 # TODO: this is hard to do with this architecture + not very interesting
