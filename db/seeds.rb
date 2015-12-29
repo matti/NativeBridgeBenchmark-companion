@@ -33,6 +33,7 @@
 
 webview = ARGV[1]
 direction = ARGV[2]
+testmode = ARGV[3]
 
 raise "Unknown webview: #{webview}" unless ["uiwebview", "wkwebview"].include? webview
 raise "Unknown direction: #{direction}" unless ["native", "webview", "nativesync"].include? direction
@@ -109,21 +110,23 @@ elsif direction == "webview"
     ]
   end
 
-elsif direction == "nativesync"
-  if webview == "uiwebview"
-    methods = [
-      "jscore.pongweb",
-      "xhr.pongweb",
-      "xhrlocal.pongweb",
-      "prompt.pongweb"
-    ]
-  elsif webview == "wkwebview"
-    methods = [
-      #"webkit.usercontent", no return value jscore is acually better
-      "prompt.pongweb",
-      "xhrlocal.pongweb"
-    ]
-  end
+  #TODO: pong is not a bridge, it's combination of two bridges.
+# elsif direction == "nativesync"
+#   if webview == "uiwebview"
+#     methods = [
+#       "jscore.pongweb",
+#       "xhr.pongweb",
+#       "xhrlocal.pongweb",
+#       "prompt.pongweb"
+#     ]
+#   elsif webview == "wkwebview"
+#     methods = [
+#       #"webkit.usercontent", no return value jscore is acually better
+#       "prompt.pongweb",
+#       "xhrlocal.pongweb"
+#     ]
+#   end
+
 # TODO: this is hard to do with this architecture + not very interesting
 # elsif direction == "webviewsync"
 #   if webview == "uiwebview"
@@ -140,17 +143,31 @@ elsif direction == "nativesync"
 end
 
 
-message_amounts = [
-  5
-]
+if testmode == "smoke"
+  message_amounts = [
+    2
+  ]
 
-intervals = [
-  1000
-]
+  intervals = [
+    100
+  ]
 
-payloads = [
-  1000
-]
+  payloads = [
+    6
+  ]
+else
+  message_amounts = [
+    5
+  ]
+
+  intervals = [
+    1000
+  ]
+
+  payloads = [
+    6
+  ]
+end
 
 #TODO: webview.eval
 
