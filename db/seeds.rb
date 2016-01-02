@@ -62,8 +62,8 @@ if direction == "native"
       "prompt",
       "alert",
       "confirm",
-      "xhrlocal.async",
-      "xhrlocal.sync"
+      "xhrlocal.async", # 6*1024 payload max
+      "xhrlocal.sync"   # 6*1024 payload max
     ]
   elsif webview == "wkwebview"
     methods = [
@@ -143,29 +143,54 @@ elsif direction == "webview"
 end
 
 
-if testmode == "smoke"
+case testmode
+when "smoke"
   message_amounts = [
     2
   ]
 
   intervals = [
+    500
+  ]
+
+  payloads = [
+    6
+  ]
+when "small"
+  message_amounts = [
     100
   ]
 
+  intervals = [
+    75
+  ]
+
   payloads = [
     6
   ]
-else
+when "medium"
   message_amounts = [
-    5
+    10 #100
   ]
 
   intervals = [
-    1000
+    500
   ]
 
   payloads = [
-    6
+    1024
+  ]
+when "large"
+  message_amounts = [
+    20 #100
+  ]
+
+  intervals = [
+    1250
+  ]
+
+  payloads = [
+    5120
   ]
 end
 
