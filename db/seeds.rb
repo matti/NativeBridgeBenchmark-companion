@@ -43,6 +43,7 @@ if direction == "native"
     methods = [
       #"cookie", doesn't work anymore mihail agrees.
       #"localStorage", doesn't work anymore in ios8
+
       "http.websockets",
       "jscore.sync",
       "html.iframe",
@@ -62,8 +63,10 @@ if direction == "native"
       "prompt",
       "alert",
       "confirm",
-      "xhrlocal.async", # 6*1024 payload max
-      "xhrlocal.sync"   # 6*1024 payload max
+      "xhrpost.async",
+      "xhrpost.sync",
+      "xhrget.async", # 6*1024 payload max
+      "xhrget.sync"   # 6*1024 payload max
     ]
   elsif webview == "wkwebview"
     methods = [
@@ -89,8 +92,10 @@ if direction == "native"
       "webkit.prompt",
       "webkit.confirm",
       "webkit.title",
-      "xhrlocal.async",
-      "xhrlocal.sync"
+      "xhrpost.async",
+      "xhrpost.sync",
+      "xhrget.async",
+      "xhrget.sync"
     ]
   end
 elsif direction == "webview"
@@ -100,7 +105,7 @@ elsif direction == "webview"
       "webview.eval",
       "jscore.sync",
       "http.websockets"
-    ]
+  ]
   elsif webview == "wkwebview"
     #TODO: surely more?
     methods = [
@@ -116,14 +121,14 @@ elsif direction == "webview"
 #     methods = [
 #       "jscore.pongweb",
 #       "xhr.pongweb",
-#       "xhrlocal.pongweb",
+#       "xhrget.pongweb",
 #       "prompt.pongweb"
 #     ]
 #   elsif webview == "wkwebview"
 #     methods = [
 #       #"webkit.usercontent", no return value jscore is acually better
 #       "prompt.pongweb",
-#       "xhrlocal.pongweb"
+#       "xhrget.pongweb"
 #     ]
 #   end
 

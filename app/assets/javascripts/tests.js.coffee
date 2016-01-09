@@ -198,6 +198,13 @@ window.sendWithHtmlImgReplace = (opts={}) ->
   document.body.appendChild(clonedElem)
 
 window.sendWithHtmlSvgImage = (opts={}) ->
+  window.sendWithHtmlSvgImageSame(opts)
+
+window.sendWithHtmlSvgImageSame = (opts={}) ->
+  svgImageElem = document.querySelector("svg image.nativebridge")
+  svgImageElem.setAttributeNS 'http://www.w3.org/1999/xlink','href', "http://#{generateRequestURL(opts)}"
+
+window.sendWithHtmlSvgImageFull = (opts={}) ->
   svgElem = document.createElementNS 'http://www.w3.org/2000/svg', 'svg'
   svgElem.width = "100px"
   svgElem.height = "100px"
@@ -209,10 +216,6 @@ window.sendWithHtmlSvgImage = (opts={}) ->
   svgElem.appendChild(svgImageElem)
 
   document.body.appendChild(svgElem)
-
-window.sendWithHtmlSvgImageSame = (opts={}) ->
-  svgImageElem = document.querySelector("svg image.nativebridge")
-  svgImageElem.setAttributeNS 'http://www.w3.org/1999/xlink','href', "http://#{generateRequestURL(opts)}"
 
 window.sendWithHtmlSvgImageReplace = (opts={}) ->
   svgImageElem = document.querySelector("svg image.nativebridge")
@@ -284,16 +287,18 @@ window.sendWithXHRPongWeb = (opts={}) ->
   xhr.send()
   window.bridgeHead xhr.responseText
 
-window.sendWithXHRLocal = (opts={}) ->
+window.sendWithXHRGet = (opts={}) ->
   xhr = new XMLHttpRequest()
   xhr.open "get", "http://localhost:31337/#{generateRequestURL(opts)}", opts.async
   xhr.send()
 
-sendWithXHRLocalPongWeb = (opts={}) ->
+sendWithXHRPost = (opts={}) ->
+  payload = opts.payload
+  opts.payload = ""
+
   xhr = new XMLHttpRequest()
-  xhr.open "get", "http://localhost:31337/#{generateRequestURL(opts)}", opts.async
-  xhr.send()
-  window.bridgeHead xhr.responseText
+  xhr.open "POST", "http://localhost:31337/#{generateRequestURL(opts)}", opts.async
+  xhr.send(payload)
 
 window.currentFps = ->
   fps = if window.COULD_NOT_ANIMATE_EVEN_ONCE
@@ -410,15 +415,18 @@ window.intervalSender = (opts={}) ->
     else if opts.method == "xhr.pongweb"
       nativeOptions.async = false
       sendWithXHRPongWeb nativeOptions
-    else if opts.method == "xhrlocal.async"
+    else if opts.method == "xhrget.async"
       nativeOptions.async = true
-      sendWithXHRLocal nativeOptions
-    else if opts.method == "xhrlocal.sync"
+      sendWithXHRGet nativeOptions
+    else if opts.method == "xhrget.sync"
       nativeOptions.async = false
-      sendWithXHRLocal nativeOptions
-    else if opts.method == "xhrlocal.pongweb"
+      sendWithXHRGet nativeOptions
+    else if opts.method == "xhrpost.sync"
       nativeOptions.async = false
-      sendWithXHRLocalPongWeb nativeOptions
+      sendWithXHRPost nativeOptions
+    else if opts.method == "xhrpost.async"
+      nativeOptions.async = true
+      sendWithXHRPost nativeOptions
 
     window.renderloopHighest = 0
 

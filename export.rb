@@ -3,7 +3,7 @@
 require "./config/environment"
 require "csv"
 
-fields = ["id", "method_name", "fps", "mem", "cpu", "webview_to_native_delta", "native_to_webview_delta", "render_paused"]
+fields = ["id", "method", "fps", "mem", "cpu", "w2n", "n2w", "pause"]
 
 # test = Test.first
 #
