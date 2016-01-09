@@ -107,7 +107,6 @@ elsif direction == "webview"
       "http.websockets"
   ]
   elsif webview == "wkwebview"
-    #TODO: surely more?
     methods = [
       "http.websockets",
       "webview.eval",
@@ -155,7 +154,7 @@ when "smoke"
   ]
 
   intervals = [
-    500
+    50
   ]
 
   payloads = [
@@ -191,11 +190,11 @@ when "large"
   ]
 
   intervals = [
-    1250
+    600  # iphone5s
   ]
 
   payloads = [
-    5120
+    2048
   ]
 end
 
