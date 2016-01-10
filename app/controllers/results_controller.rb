@@ -65,6 +65,7 @@ class ResultsController < ApplicationController
         :fps,
         :method_name,
         :cpu, :mem,
-        :render_paused)
+        :render_paused,
+        :agent)
     end
 end

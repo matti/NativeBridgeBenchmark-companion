@@ -57,9 +57,12 @@ window.payloadGenerator = (length) ->
   return text
 
 
+generateBetterUserAgent = () ->
+  encodeURIComponent "#{navigator.userAgent + window.devicePixelRatio}"
+
 generateRequestURL = (opts={}) ->
   now = new Date
-  requestURL = "nativebridge://ping?webview_started_at=#{now.toJSON()}&payload=#{opts.payload}&method_name=#{opts.method}&fps=#{opts.currentFps}&render_paused=#{opts.currentRenderLoopPause}"
+  requestURL = "nativebridge://ping?webview_started_at=#{now.toJSON()}&payload=#{opts.payload}&method_name=#{opts.method}&fps=#{opts.currentFps}&render_paused=#{opts.currentRenderLoopPause}&agent=#{generateBetterUserAgent()}"
 
   return requestURL;
 
@@ -546,6 +549,7 @@ window.bridgeHead = (messageJSON) ->
     mem: message.mem
     cpu: message.cpu
     payload: message.payload
+    agent: navigator.userAgent + window.devicePixelRatio
 
   window.renderloopHighest = 0
   bridgeHeadMessages.push benchmarkMessage

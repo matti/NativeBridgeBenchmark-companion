@@ -203,6 +203,7 @@
       <th>Native received</th>
       <th>Native started</th>
       <th>WebView received</th>
+      <th>Agent</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -230,6 +231,7 @@
         <td><%= result.native_started_at.to_f.round(4) %></td>
         <td><%= result.webview_received_at.to_f.round(4) %></td>
 
+        <td><%= result.agent %></td>
 
         <td><%= link_to 'Edit', edit_test_result_path(@test, result) %></td>
         <td><%= link_to 'Destroy', test_result_path(@test, result), method: :delete, data: { confirm: 'Are you sure?' } %></td>

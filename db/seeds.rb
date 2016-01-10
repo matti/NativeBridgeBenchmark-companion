@@ -162,39 +162,40 @@ when "smoke"
   ]
 when "small"
   message_amounts = [
+    375
+  ]
+
+  intervals = [
     100
   ]
 
-  intervals = [
-    75
-  ]
-
   payloads = [
-    6
+    1
   ]
 when "medium"
   message_amounts = [
-    10 #100
+    375
   ]
 
   intervals = [
-    500
+    200
   ]
 
   payloads = [
-    1024
+    64
   ]
 when "large"
   message_amounts = [
-    20 #100
+    375 #100
   ]
 
+  # ipad mini 256kb max 330
   intervals = [
-    600  # iphone5s
+    350
   ]
 
   payloads = [
-    2048
+    256
   ]
 end
 
