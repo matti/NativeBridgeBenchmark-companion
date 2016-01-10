@@ -186,12 +186,12 @@ when "medium"
   ]
 when "large"
   message_amounts = [
-    375 #100
+    150 #100
   ]
 
   # ipad mini 256kb max 330
   intervals = [
-    350
+    500
   ]
 
   payloads = [
