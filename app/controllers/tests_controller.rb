@@ -1,6 +1,11 @@
 class TestsController < ApplicationController
   before_action :set_test, only: [:show, :edit, :update, :destroy, :perform]
 
+  def export
+    system("ruby export.rb")
+    send_file("tmp/all.csv", :type => "text/csv; charset=utf-8")
+  end
+  
   def reset
     system("rake db:migrate VERSION=0")
     system("rake db:migrate")

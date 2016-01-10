@@ -61,7 +61,7 @@ csv_string = CSV.generate(col_sep: ",") do |csv|
               "iPad Mini 4"
             elsif result.agent == "Mozilla/5.0 (iPad; CPU OS 9_2 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Mobile/13C751"
               "iPad Mini"
-            elsif result.agent == "iPhone; CPU iPhone OS 9_2 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Mobile/13C752"
+            elsif result.agent == "Mozilla/5.0 (iPhone; CPU iPhone OS 9_2 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Mobile/13C752"
               "iPhone 5s"
             else
               "unknown"
@@ -80,4 +80,4 @@ csv_string = CSV.generate(col_sep: ",") do |csv|
 
 end
 
-File.write("export/all.csv", csv_string)
+File.write("tmp/all.csv", csv_string)

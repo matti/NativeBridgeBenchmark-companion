@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :tests do
     collection do
       delete 'reset'
+      get 'export'
     end
 
     member do
