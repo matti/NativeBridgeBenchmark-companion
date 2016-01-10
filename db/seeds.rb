@@ -30,13 +30,15 @@
 #   "html.script.replace"
 # ]
 
-
 webview = ARGV[1]
 direction = ARGV[2]
 testmode = ARGV[3]
 
 raise "Unknown webview: #{webview}" unless ["uiwebview", "wkwebview"].include? webview
 raise "Unknown direction: #{direction}" unless ["native", "webview", "nativesync"].include? direction
+
+Result.destroy_all
+Test.destroy_all
 
 if direction == "native"
   if webview == "uiwebview"
