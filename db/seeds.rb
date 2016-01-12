@@ -147,6 +147,18 @@ end
 
 
 case testmode
+when "debug"
+  message_amounts = [
+    300
+  ]
+
+  intervals = [
+    20
+  ]
+
+  payloads = [
+    1
+  ]
 when "smoke"
   message_amounts = [
     2
