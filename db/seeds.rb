@@ -93,8 +93,8 @@ if direction == "native"
       "webkit.title",
       "xhrpost.async",
       "xhrpost.sync",
-      "xhrget.async",
-      "xhrget.sync"
+#      "xhrget.async",
+#      "xhrget.sync"
     ]
   end
 elsif direction == "webview"
