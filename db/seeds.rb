@@ -177,7 +177,7 @@ when "medium"
   ]
 
   intervals = [
-    200
+    300
   ]
 
   payloads = [
