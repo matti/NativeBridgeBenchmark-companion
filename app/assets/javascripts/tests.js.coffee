@@ -635,7 +635,7 @@ document.querySelector("button#flush").onclick = ->
       native_started_at: message.native_started_at
       webview_received_at: message.webview_received_at
       webview_started_at: message.webview_started_at
-      agent: generateBetterUserAgent()
+      agent: decodeURIComponent(generateBetterUserAgent())
 
     setTimeout =>
       xmlhttp = new XMLHttpRequest()
