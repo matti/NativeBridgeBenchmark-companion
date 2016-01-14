@@ -601,23 +601,26 @@ if getParameterByName("method")
   document.querySelector("button#perform").click()
 
 
+nativeFlush = ->
+    object =
+      type: "flush"
+
+    ws.send JSON.stringify(object)
+    showIndicator "requested flush+advance from native"
+
 document.querySelector("button#flush").onclick = ->
 
-  object =
-    type: "flush"
+  if window.bridgeHeadMessages.length == 0
+    nativeFlush()
+    return
 
-  ws.send JSON.stringify(object)
-  showIndicator "requested flush from native"
-
-  noWebViewMessages = true
   popAndSend = ->
     message = window.bridgeHeadMessages.pop()
 
     unless message
-      showIndicator "Flushing: DONE" unless noWebViewMessages
+      showIndicator "Flushing: DONE"
+      nativeFlush() # to advance
       return
-    else
-      noWebViewMessages = false
 
     showIndicator "Flushing: #{window.bridgeHeadMessages.length}"
 
@@ -632,6 +635,7 @@ document.querySelector("button#flush").onclick = ->
       native_started_at: message.native_started_at
       webview_received_at: message.webview_received_at
       webview_started_at: message.webview_started_at
+      agent: decodeURIComponent(generateBetterUserAgent())
 
     setTimeout =>
       xmlhttp = new XMLHttpRequest()

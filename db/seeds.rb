@@ -93,8 +93,8 @@ if direction == "native"
       "webkit.title",
       "xhrpost.async",
       "xhrpost.sync",
-      "xhrget.async",
-      "xhrget.sync"
+#      "xhrget.async",
+#      "xhrget.sync"
     ]
   end
 elsif direction == "webview"
@@ -147,6 +147,18 @@ end
 
 
 case testmode
+when "debug"
+  message_amounts = [
+    300
+  ]
+
+  intervals = [
+    20
+  ]
+
+  payloads = [
+    1
+  ]
 when "smoke"
   message_amounts = [
     2
@@ -165,7 +177,7 @@ when "small"
   ]
 
   intervals = [
-    100
+    500
   ]
 
   payloads = [
@@ -177,7 +189,7 @@ when "medium"
   ]
 
   intervals = [
-    300
+    500
   ]
 
   payloads = [
