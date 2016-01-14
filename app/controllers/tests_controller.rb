@@ -5,11 +5,11 @@ class TestsController < ApplicationController
     system("ruby export.rb")
     send_file("tmp/all.csv", :type => "text/csv; charset=utf-8")
   end
-  
+
   def reset
     system("rake db:migrate VERSION=0")
     system("rake db:migrate")
-    system("rake db:setup")
+    #system("rake db:setup")
   end
 
 
