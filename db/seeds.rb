@@ -185,7 +185,7 @@ when "medium"
   ]
 when "large"
   message_amounts = [
-    75 #100
+    375 #100
   ]
 
   # ipad mini 256kb max 330
