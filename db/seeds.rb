@@ -177,7 +177,7 @@ when "small"
   ]
 
   intervals = [
-    500
+    100
   ]
 
   payloads = [
@@ -189,7 +189,7 @@ when "medium"
   ]
 
   intervals = [
-    500
+    250
   ]
 
   payloads = [
