@@ -208,6 +208,20 @@ when "large"
   payloads = [
     256
   ]
+when "suite"
+  message_amounts = [
+    3 #100
+  ]
+
+  # ipad mini 256kb max 330
+  intervals = [
+    500
+  ]
+
+  payloads = [
+    1,
+    256
+  ]
 end
 
 #TODO: webview.eval
