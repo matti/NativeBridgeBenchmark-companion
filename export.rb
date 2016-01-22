@@ -82,6 +82,6 @@ agents.each do |agent|
       end
     end
 
-    File.write("export/#{known_agents[agent]}-#{export_name}-#{payload}.csv", csv_string)
+    File.write("tmp/#{known_agents[agent]}-#{export_name}-#{payload}.csv", csv_string)
   end
 end

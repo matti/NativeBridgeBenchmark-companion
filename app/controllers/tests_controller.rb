@@ -2,8 +2,15 @@ class TestsController < ApplicationController
   before_action :set_test, only: [:show, :edit, :update, :destroy, :perform]
 
   def export
-    system("ruby export.rb")
-    send_file("tmp/all.csv", :type => "text/csv; charset=utf-8")
+    export_name = params[:name]
+
+    if export_name
+      system("ruby export.rb #{params[:name]}")
+      system("zip -pr tmp/export.zip tmp")
+      send_file("tmp/all.csv", :type => "text/csv; charset=utf-8")
+    else
+      render :text => "name param missing"
+    end
   end
 
   def reset
