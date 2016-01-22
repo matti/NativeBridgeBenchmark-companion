@@ -1,5 +1,9 @@
 #!/usr/bin/env ruby
 
+export_name = ARGV[0]
+
+raise "export_name missing" unless export_name
+
 require "./config/environment"
 require "csv"
 
@@ -20,56 +24,64 @@ known_agents = {
 header_fields = ["configuration"] + (fields)
 
 agents = Result.all.map(&:agent).uniq
+test_names = Test.all.map(&:name).uniq
 
-puts agents.inspect
+payloads = []
+test_names.each do |test_name|
+  test_method_name, test_amount, test_interval, test_payload, others = test_name.split("-")
+  payloads << test_payload
+end
+payloads.uniq!
 
 agents.each do |agent|
-  csv_string = CSV.generate(col_sep: ",") do |csv|
-    csv << header_fields
+  payloads.each do |payload|
+    csv_string = CSV.generate(col_sep: ",") do |csv|
+      csv << header_fields
 
-    Test.all.each do |test|
+      Test.all.each do |test|
 
-      puts "test: #{test.name}"
-      puts "results: #{test.results.size}"
+        puts "test: #{test.name}"
+        puts "results: #{test.results.size}"
 
-      test.results.each do |result|
-        result_row = []
+        test.results.each do |result|
+          result_row = []
 
-        test_method_name, test_amount, test_interval, test_payload, others = test.name.split("-")
-        test_configuration = "test-#{test_amount}-#{test_interval}-#{test_payload}"
+          test_method_name, test_amount, test_interval, test_payload, others = test.name.split("-")
+          test_configuration = "test-#{test_amount}-#{test_interval}-#{test_payload}"
 
-        result_row << test_configuration
+          result_row << test_configuration
 
-        fields.each do |field|
-          better_field = if field == "w2n"
-            "webview_to_native_ms_delta"
-          elsif field == "n2w"
-            "native_to_webview_ms_delta"
-          elsif field == "pause"
-            "render_paused"
-          elsif field == "method"
-            "method_name"
-          else
-            field
-          end
-
-          if field == "agent"
-            result_row << if known_agents[result.agent]
-              known_agents[result.agent]
+          fields.each do |field|
+            better_field = if field == "w2n"
+              "webview_to_native_ms_delta"
+            elsif field == "n2w"
+              "native_to_webview_ms_delta"
+            elsif field == "pause"
+              "render_paused"
+            elsif field == "method"
+              "method_name"
             else
-              "unknown"
+              field
             end
-          else
-            result_row << result.send(better_field.to_sym)
+
+            if field == "agent"
+              result_row << if known_agents[result.agent]
+                known_agents[result.agent]
+              else
+                "unknown"
+              end
+            else
+              result_row << result.send(better_field.to_sym)
+            end
           end
+
+          csv << result_row if agent == result.agent && payload == test_payload
+
         end
 
-        csv << result_row if agent == result.agent
-
       end
-
     end
-  end
 
-  File.write("export/#{known_agents[agent]}.csv", csv_string)
+    File.write("export/#{known_agents[agent]}-#{export_name}-#{payload}.csv", csv_string)
+  end
 end
