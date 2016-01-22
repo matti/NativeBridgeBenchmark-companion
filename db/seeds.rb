@@ -210,7 +210,7 @@ when "large"
   ]
 when "suite"
   message_amounts = [
-    3 #100
+    100
   ]
 
   # ipad mini 256kb max 330
