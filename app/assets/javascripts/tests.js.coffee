@@ -570,15 +570,18 @@ document.querySelector("button#perform").onclick = ->
       payload = window.payloadGenerator(1024*payloadLength)
 
       window.setTimeout =>
-        window.renderloopHighest = 0
-
         showIndicator("started #{method} (every #{interval}ms) with #{payloadLength} of payload")
-        intervalSender
-          method: method
-          interval: interval
-          messages: messages
-          payload: payload
-      , 5000  #eliminate pauses that might have come from payload generation
+
+        window.setTimeout =>
+          window.renderloopHighest = 0
+
+          intervalSender
+            method: method
+            interval: interval
+            messages: messages
+            payload: payload
+        , 3000 # give time to calibrate renderloop
+      , 1000  #eliminate pauses that might have come from payload generation
     , 500
 
   else
@@ -594,7 +597,9 @@ document.querySelector("button#perform").onclick = ->
       console.log "requested payload from native"
       ws.send JSON.stringify(object)
       showIndicator "requested messages from native"
-    , 5000 #eliminate pauses that might have come from payload generation
+
+      window.renderloopHighest = 0
+    , 1000 #eliminate pauses that might have come from payload generation
 
 if getParameterByName("method")
   document.querySelector("button#perform").click()
