@@ -169,7 +169,7 @@ when "smoke"
   ]
 
   payloads = [
-    6
+    1
   ]
 when "small"
   message_amounts = [
