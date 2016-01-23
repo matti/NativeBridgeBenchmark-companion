@@ -569,7 +569,6 @@ document.querySelector("button#perform").onclick = ->
     window.setTimeout =>
       payload = window.payloadGenerator(1024*payloadLength)
 
-      #eliminate touch event fuckup
       window.setTimeout =>
         window.renderloopHighest = 0
 
@@ -579,7 +578,7 @@ document.querySelector("button#perform").onclick = ->
           interval: interval
           messages: messages
           payload: payload
-      , 1000
+      , 5000  #eliminate pauses that might have come from payload generation
     , 500
 
   else
@@ -595,7 +594,7 @@ document.querySelector("button#perform").onclick = ->
       console.log "requested payload from native"
       ws.send JSON.stringify(object)
       showIndicator "requested messages from native"
-    , 500
+    , 5000 #eliminate pauses that might have come from payload generation
 
 if getParameterByName("method")
   document.querySelector("button#perform").click()
