@@ -5,9 +5,10 @@ class TestsController < ApplicationController
     export_name = params[:name]
 
     if export_name
+      system("rm tmp/export.zip")
       system("ruby export.rb #{params[:name]}")
-      system("zip -pr tmp/export.zip tmp")
-      send_file("tmp/all.csv", :type => "text/csv; charset=utf-8")
+      system("zip -pr tmp/export.zip tmp/*.csv")
+      send_file("tmp/export.zip", :type => "application/zip")
     else
       render :text => "name param missing"
     end
