@@ -215,7 +215,7 @@ when "suite"
 
   # ipad mini 256kb max 330
   intervals = [
-    500
+    1000
   ]
 
   payloads = [
