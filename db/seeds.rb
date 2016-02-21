@@ -222,6 +222,20 @@ when "suite"
     1,
     256
   ]
+when "suitedebug"
+  message_amounts = [
+    100
+  ]
+
+  # ipad mini 256kb max 330
+  intervals = [
+    100
+  ]
+
+  payloads = [
+    1,
+    256
+  ]
 end
 
 #TODO: webview.eval
