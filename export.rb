@@ -33,6 +33,29 @@ test_names.each do |test_name|
 end
 payloads.uniq!
 
+
+module Enumerable
+
+    def sum
+      self.inject(0){|accum, i| accum + i }
+    end
+
+    def mean
+      self.sum/self.length.to_f
+    end
+
+    def sample_variance
+      m = self.mean
+      sum = self.inject(0){|accum, i| accum +(i-m)**2 }
+      sum/(self.length - 1).to_f
+    end
+
+    def standard_deviation
+      return Math.sqrt(self.sample_variance)
+    end
+
+end
+
 agents.each do |agent|
   payloads.each do |payload|
     csv_string = CSV.generate(col_sep: ",") do |csv|
@@ -43,7 +66,23 @@ agents.each do |agent|
         puts "test: #{test.name}"
         puts "results: #{test.results.size}"
 
+        pause_samples = test.results.map(&:render_paused)
+        pause_average = test.results.average(:render_paused)
+        pause_stddev = pause_samples.standard_deviation
+
+        puts "pause_average: #{pause_average}"
+        puts "pause std dev: #{pause_stddev}"
+
+
         test.results.each do |result|
+          current_pause_absolute_distance = (result.render_paused - pause_average).abs
+          if current_pause_absolute_distance > 2*pause_stddev
+            puts "OUTLIER: #{current_pause_absolute_distance} vs #{2*pause_stddev}"
+            next
+          else
+            puts "not outleir"
+          end
+
           result_row = []
 
           test_method_name, test_amount, test_interval, test_payload, others = test.name.split("-")
