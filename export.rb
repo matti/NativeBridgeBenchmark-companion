@@ -62,31 +62,50 @@ agents.each do |agent|
       csv << header_fields
 
       Test.all.each do |test|
+        test_method_name, test_amount, test_interval, test_payload, others = test.name.split("-")
+        test_configuration = "test-#{test_amount}-#{test_interval}-#{test_payload}"
 
         puts "test: #{test.name}"
         puts "results: #{test.results.size}"
 
-        pause_samples = test.results.map(&:render_paused)
+        results_for_agent = test.results.where(agent: agent)
+
+        pause_samples = results_for_agent.map(&:render_paused)
         pause_average = test.results.average(:render_paused)
         pause_stddev = pause_samples.standard_deviation
 
-        puts "pause_average: #{pause_average}"
-        puts "pause std dev: #{pause_stddev}"
+        webview_to_native_ms_delta_samples = results_for_agent.map(&:webview_to_native_ms_delta)
+        webview_to_native_ms_delta_average = webview_to_native_ms_delta_samples.mean
+        webview_to_native_ms_delta_stddev = webview_to_native_ms_delta_samples.standard_deviation
 
+        native_to_webview_ms_delta_samples = results_for_agent.map(&:native_to_webview_ms_delta)
+        native_to_webview_ms_delta_average = native_to_webview_ms_delta_samples.mean
+        native_to_webview_ms_delta_stddev = native_to_webview_ms_delta_samples.standard_deviation
 
-        test.results.each do |result|
+        results_for_agent.each do |result|
           current_pause_absolute_distance = (result.render_paused - pause_average).abs
-          if current_pause_absolute_distance > 2*pause_stddev
-            puts "OUTLIER: #{current_pause_absolute_distance} vs #{2*pause_stddev}"
+          current_native_to_webview_ms_delta_absolute_distance = (result.native_to_webview_ms_delta - native_to_webview_ms_delta_average).abs
+          current_webview_to_native_ms_delta_absolute_distance = (result.webview_to_native_ms_delta - webview_to_native_ms_delta_average).abs
+
+          outlier_by_pause = current_pause_absolute_distance > 2*pause_stddev
+          outlier_by_webview_to_native = current_webview_to_native_ms_delta_absolute_distance > 2*webview_to_native_ms_delta_stddev
+          outlier_by_native_to_webview = current_native_to_webview_ms_delta_absolute_distance > 2*native_to_webview_ms_delta_stddev
+
+          if outlier_by_pause ||
+             outlier_by_webview_to_native ||
+             outlier_by_native_to_webview
+
+            print "OUTLIER by: "
+            puts "pause" if outlier_by_pause
+            puts "webview to native" if outlier_by_webview_to_native
+            puts "native to webview" if outlier_by_native_to_webview
+
             next
           else
             puts "not outleir"
           end
 
           result_row = []
-
-          test_method_name, test_amount, test_interval, test_payload, others = test.name.split("-")
-          test_configuration = "test-#{test_amount}-#{test_interval}-#{test_payload}"
 
           result_row << test_configuration
 
