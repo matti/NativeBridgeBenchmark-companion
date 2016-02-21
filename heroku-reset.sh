@@ -2,3 +2,5 @@
 heroku pg:reset DATABASE_URL --confirm nativebridge-benchmark
 heroku run "rake db:migrate" --app nativebridge-benchmark
 
+heroku run rake db:seed $1 $2 $3
+
