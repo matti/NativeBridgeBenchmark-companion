@@ -157,6 +157,7 @@ agents.each do |agent|
 
     end #csv
     File.write("tmp/#{known_agents[agent]}-#{export_name}-#{payload}.csv", csv_string)
+    test_stats_output << format("")
   end #payloads
 
   File.write("tmp/#{known_agents[agent]}-#{export_name}.txt", test_stats_output)

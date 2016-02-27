@@ -68,7 +68,7 @@ for REMOTE in $REMOTES; do
   #herokuDelete $REMOTE
   #herokuCreate $REMOTE
   #addPostgres $REMOTE
-  #pushNMigrate $REMOTE
+  pushNMigrate $REMOTE
   #seedTests $REMOTE
 
   downloadExport $REMOTE
