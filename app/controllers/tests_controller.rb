@@ -10,7 +10,7 @@ class TestsController < ApplicationController
       system("rm tmp/*.txt")
 
       system("ruby export.rb #{params[:name]}")
-      system("zip -pr tmp/export.zip tmp/*.{csv,txt}")
+      system("zip -pr tmp/export.zip tmp/*.csv tmp/*.txt")
       send_file("tmp/export.zip", :type => "application/zip")
     else
       render :text => "name param missing"
