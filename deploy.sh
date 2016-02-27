@@ -28,6 +28,10 @@ function pushNMigrate() {
   heroku run 'rake db:migrate' --app $(herokuName $1)
 }
 
+function downloadExport() {
+  open http://$(herokuName $1).herokuapp.com/tests/export?name=$(herokuName $1)
+}
+
 function seedTests() {
   case $(herokuName $1) in
   "nb-uiwebview-native")
@@ -65,7 +69,9 @@ for REMOTE in $REMOTES; do
   #herokuCreate $REMOTE
   #addPostgres $REMOTE
   #pushNMigrate $REMOTE
-  seedTests $REMOTE
+  #seedTests $REMOTE
+
+  downloadExport $REMOTE
 done
 
 exit 1

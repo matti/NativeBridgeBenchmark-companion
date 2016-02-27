@@ -7,9 +7,10 @@ class TestsController < ApplicationController
     if export_name
       system("rm tmp/export.zip")
       system("rm tmp/*.csv") # dyno might stay the same
+      system("rm tmp/*.txt")
 
       system("ruby export.rb #{params[:name]}")
-      system("zip -pr tmp/export.zip tmp/*.csv")
+      system("zip -pr tmp/export.zip tmp/*.{csv,txt}")
       send_file("tmp/export.zip", :type => "application/zip")
     else
       render :text => "name param missing"
