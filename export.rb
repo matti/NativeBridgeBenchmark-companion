@@ -17,8 +17,9 @@ fields = ["id", "method", "fps", "mem", "cpu", "w2n", "n2w", "pause", "agent"]
 known_agents = {
   #"Mozilla/5.0 (iPad; CPU OS 9_2 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Mobile/13C752" => "ipadmini4",
   "Mozilla/5.0 (iPad; CPU OS 9_2_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Mobile/13D151" => "ipadmini", #updated
-  "Mozilla/5.0 (iPhone; CPU iPhone OS 9_2_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Mobile/13D152" => "iphone6plus", #updated
-  "Mozilla/5.0 (iPad; CPU OS 9_2_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Mobile/13D152" => "ipad3" #koska 2
+  "iPhone7,12" => "iphone6plus", #updated
+  "Mozilla/5.0 (iPad; CPU OS 9_2_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Mobile/13D152" => "ipadair2",
+  "iPod7,12" => "ipodtouch6"
 }
 
 
