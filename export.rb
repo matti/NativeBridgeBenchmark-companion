@@ -1,11 +1,16 @@
 #!/usr/bin/env ruby
 
+
+
 export_name = ARGV[0]
 
 raise "export_name missing" unless export_name
 
 require "./config/environment"
 require "csv"
+
+ActiveRecord::Base.logger.level = 1
+
 
 fields = ["id", "method", "fps", "mem", "cpu", "w2n", "n2w", "pause", "agent"]
 
@@ -57,11 +62,12 @@ module Enumerable
 
 end
 
+@debuggen = false
+
 def format(str)
+  puts str if @debuggen
   "#{str}\n"
 end
-
-debuggen = false
 
 test_stats_output = ""
 agents.each do |agent|
@@ -80,7 +86,7 @@ agents.each do |agent|
         results_for_agent = test.results.where(agent: agent)
 
         pause_samples = results_for_agent.map(&:render_paused)
-        pause_average = test.results.average(:render_paused)
+        pause_average = results_for_agent.average(:render_paused)
         pause_stddev = pause_samples.standard_deviation
 
         webview_to_native_ms_delta_samples = results_for_agent.map(&:webview_to_native_ms_delta)
@@ -96,7 +102,7 @@ agents.each do |agent|
 
         results_written = 0
         results_for_agent.each do |result|
-          outlier_multiplier = 6
+          outlier_multiplier = 4#6
           current_pause_absolute_distance = (result.render_paused - pause_average).abs
           current_native_to_webview_ms_delta_absolute_distance = (result.native_to_webview_ms_delta - native_to_webview_ms_delta_average).abs
           current_webview_to_native_ms_delta_absolute_distance = (result.webview_to_native_ms_delta - webview_to_native_ms_delta_average).abs
@@ -105,7 +111,13 @@ agents.each do |agent|
           outlier_by_webview_to_native = (result.webview_to_native_ms_delta > webview_to_native_ms_delta_average) && current_webview_to_native_ms_delta_absolute_distance > outlier_multiplier*webview_to_native_ms_delta_stddev
           outlier_by_native_to_webview = (result.native_to_webview_ms_delta > native_to_webview_ms_delta_average) && current_native_to_webview_ms_delta_absolute_distance > outlier_multiplier*native_to_webview_ms_delta_stddev
 
-          puts "#{result.render_paused} - #{result.webview_to_native_ms_delta} - #{result.native_to_webview_ms_delta}" if debuggen
+          if @debuggen
+            puts "#{result.render_paused} - #{result.webview_to_native_ms_delta} - #{result.native_to_webview_ms_delta}"
+            puts "  pause avg: #{pause_average}, absd: #{current_pause_absolute_distance}, pstd: #{pause_stddev}, mult: #{outlier_multiplier*pause_stddev}"
+            puts "  n2v avg: #{native_to_webview_ms_delta_average}, absd: #{current_native_to_webview_ms_delta_absolute_distance}, n2wd: #{native_to_webview_ms_delta_stddev}, mult: #{outlier_multiplier*native_to_webview_ms_delta_stddev}"
+            puts "  w2n avg: #{webview_to_native_ms_delta_average}, absd: #{current_webview_to_native_ms_delta_absolute_distance}, n2wd: #{webview_to_native_ms_delta_stddev}, mult: #{outlier_multiplier*webview_to_native_ms_delta_stddev}"
+          end
+
           if outlier_by_pause ||
              outlier_by_webview_to_native ||
              outlier_by_native_to_webview
