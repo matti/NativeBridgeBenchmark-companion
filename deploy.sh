@@ -52,6 +52,11 @@ function seedTests() {
   esac
 }
 
+function openConsole() {
+  heroku run rails c -a $(herokuName $1)
+}
+
+
 read -r -d "\n" REMOTES << EOF
 https://git.heroku.com/nb-uiwebview-native.git
 https://git.heroku.com/nb-native-uiwebview.git
@@ -68,10 +73,12 @@ for REMOTE in $REMOTES; do
   #herokuDelete $REMOTE
   #herokuCreate $REMOTE
   #addPostgres $REMOTE
-  pushNMigrate $REMOTE
+  #pushNMigrate $REMOTE
   #seedTests $REMOTE
 
-  downloadExport $REMOTE
+  openConsole $REMOTE
+
+  #downloadExport $REMOTE
 done
 
 exit 1
