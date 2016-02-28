@@ -103,7 +103,7 @@ agents.each do |agent|
 
         results_written = 0
         results_for_agent.each do |result|
-          outlier_multiplier = 4#6
+          outlier_multiplier = 3
           current_pause_absolute_distance = (result.render_paused - pause_average).abs
           current_native_to_webview_ms_delta_absolute_distance = (result.native_to_webview_ms_delta - native_to_webview_ms_delta_average).abs
           current_webview_to_native_ms_delta_absolute_distance = (result.webview_to_native_ms_delta - webview_to_native_ms_delta_average).abs
